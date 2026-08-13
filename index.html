@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maison — ательє сучасного одягу</title>
+<meta name="description" content="Maison — ательє готового одягу. Натуральні тканини, точний крій, речі, які тримають форму сезон за сезоном.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="announcement">Безкоштовна доставка при замовленні від 2 000 ₴</div>
+
+<header class="site-header">
+  <div class="container nav">
+    <a href="index.html" class="logo">Maison</a>
+    <nav class="nav-links">
+      <a href="index.html#categories">Жінкам</a>
+      <a href="index.html#categories">Чоловікам</a>
+      <a href="index.html#bestsellers">Новинки</a>
+      <a href="index.html#promo">Аутлет</a>
+    </nav>
+    <div class="nav-actions">
+      <button type="button" class="search-trigger" aria-label="Пошук"><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i></button>
+      <button type="button" data-modal="account" aria-label="Акаунт"><i class="fa-solid fa-user" aria-hidden="true"></i></button>
+      <a href="cart.html" aria-label="Кошик">
+        <i class="fa-solid fa-bag-shopping" aria-hidden="true"></i>
+        <span class="cart-count">2</span>
+      </a>
+      <button type="button" class="menu-toggle" aria-label="Відкрити меню"><i class="fa-solid fa-bars" aria-hidden="true"></i></button>
+    </div>
+  </div>
+</header>
+
+<div class="mobile-menu">
+  <div class="mobile-menu-header">
+    <span class="logo">Maison</span>
+    <button type="button" class="mobile-menu-close" aria-label="Закрити меню"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
+  </div>
+  <nav>
+    <a href="index.html#categories">Жінкам</a>
+    <a href="index.html#categories">Чоловікам</a>
+    <a href="index.html#bestsellers">Новинки</a>
+    <a href="index.html#promo">Аутлет</a>
+    <a href="cart.html">Кошик</a>
+  </nav>
+</div>
+
+<main>
+  <div class="container">
+
+    <section class="hero">
+      <div>
+        <p class="eyebrow">Архів № 07 · Осінь 2026</p>
+        <h1>Крій, що тримає форму</h1>
+        <p class="lead">Натуральні тканини, продумані шви, розмірна сітка від XS до XXL. Кожна модель — із карткою складу тканини та рекомендаціями догляду.</p>
+        <div class="hero-actions">
+          <a href="#bestsellers" class="btn btn-primary">Переглянути колекцію</a>
+          <a href="#categories" class="btn btn-secondary">Усі категорії</a>
+        </div>
+      </div>
+      <div class="hero-media swatch">
+        <i class="fa-solid fa-shirt" aria-hidden="true"></i>
+      </div>
+    </section>
+
+    <section class="trust-bar">
+      <div class="trust-item"><i class="fa-solid fa-truck-fast" aria-hidden="true"></i><span>Доставка 1–3 дні</span></div>
+      <div class="trust-item"><i class="fa-solid fa-rotate-left" aria-hidden="true"></i><span>Повернення 30 днів</span></div>
+      <div class="trust-item"><i class="fa-solid fa-lock" aria-hidden="true"></i><span>Безпечна оплата</span></div>
+      <div class="trust-item"><i class="fa-solid fa-comments" aria-hidden="true"></i><span>Консультація стиліста</span></div>
+    </section>
+
+    <section class="section" id="categories">
+      <div class="section-head"><h2>Категорії</h2></div>
+      <div class="category-grid">
+        <a href="product.html?id=jacket" class="category-card">
+          <div class="category-media swatch"><i class="fa-solid fa-vest" aria-hidden="true"></i></div>
+          <span>Верхній одяг</span>
+        </a>
+        <a href="product.html?id=dress" class="category-card">
+          <div class="category-media swatch"><i class="fa-solid fa-person-dress" aria-hidden="true"></i></div>
+          <span>Сукні</span>
+        </a>
+        <a href="product.html?id=shoes" class="category-card">
+          <div class="category-media swatch"><i class="fa-solid fa-shoe-prints" aria-hidden="true"></i></div>
+          <span>Взуття</span>
+        </a>
+        <a href="#bestsellers" class="category-card">
+          <div class="category-media swatch"><i class="fa-solid fa-glasses" aria-hidden="true"></i></div>
+          <span>Аксесуари</span>
+        </a>
+      </div>
+    </section>
+
+    <section class="section" id="bestsellers">
+      <div class="section-head">
+        <h2>Бестселери</h2>
+      </div>
+      <div class="product-grid" id="bestsellers-grid"></div>
+    </section>
+
+    <section class="section" id="promo" style="padding-top:0;">
+      <div class="promo-banner">
+        <p class="eyebrow">Обмежена кількість</p>
+        <h2>Архівний розпродаж — до −40%</h2>
+        <p>Минулі колекції за спеціальною ціною, поки вистачить розмірів.</p>
+        <a href="product.html?id=shirt" class="btn btn-primary">До розпродажу</a>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-col footer-brand">
+        <h4>Maison</h4>
+        <p>Ательє готового одягу. Натуральні тканини, точний крій, речі, які тримають форму сезон за сезоном.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Клієнтам</h4>
+        <a href="#" data-modal="shipping">Доставка та оплата</a>
+        <a href="#" data-modal="returns">Повернення</a>
+        <a href="#" data-modal="sizes">Розмірна сітка</a>
+      </div>
+      <div class="footer-col">
+        <h4>Компанія</h4>
+        <a href="#" data-modal="about">Про ательє</a>
+        <a href="#" data-modal="contact">Контакти</a>
+        <a href="#" data-modal="careers">Вакансії</a>
+      </div>
+      <div class="footer-col">
+        <h4>Розсилка</h4>
+        <p>Знижка 10% на перше замовлення</p>
+        <div class="newsletter-form">
+          <input type="email" placeholder="Ваш email" aria-label="Email для розсилки">
+          <button type="button" class="btn btn-primary btn-sm" aria-label="Підписатися"><i class="fa-solid fa-arrow-right" aria-hidden="true"></i></button>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Maison. Усі права захищені.</span>
+      <div class="social-links">
+        <a href="#" aria-label="Instagram" data-toast="Демо-версія: соціальні мережі поки не підключені"><i class="fa-brands fa-instagram" aria-hidden="true"></i></a>
+        <a href="#" aria-label="Facebook" data-toast="Демо-версія: соціальні мережі поки не підключені"><i class="fa-brands fa-facebook" aria-hidden="true"></i></a>
+        <a href="#" aria-label="TikTok" data-toast="Демо-версія: соціальні мережі поки не підключені"><i class="fa-brands fa-tiktok" aria-hidden="true"></i></a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
