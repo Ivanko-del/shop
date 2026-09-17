@@ -5,27 +5,51 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Товар — Maison</title>
 <meta name="description" content="Картка товару Maison: розміри, кольори, склад тканини та догляд.">
+<meta name="theme-color" content="#F6F4EF">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,600;1,600&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <link rel="stylesheet" href="styles.css">
+<script>
+  (function () {
+    document.documentElement.classList.add('js');
+    try {
+      var saved = localStorage.getItem('maison-theme');
+      var dark = saved ? saved === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+      if (dark) document.documentElement.dataset.theme = 'dark';
+    } catch (e) {}
+  })();
+</script>
 </head>
 <body>
 
-<div class="announcement">Безкоштовна доставка при замовленні від 2 000 ₴</div>
+<div class="scroll-progress" id="scroll-progress"></div>
 
-<header class="site-header">
+<div class="announcement">
+  <div class="announcement-track">
+    <span>Безкоштовна доставка від 2 000 ₴</span>
+    <span>Повернення протягом 30 днів</span>
+    <span>Промокод MAISON10 — знижка 10%</span>
+    <span>Безкоштовна доставка від 2 000 ₴</span>
+    <span>Повернення протягом 30 днів</span>
+    <span>Промокод MAISON10 — знижка 10%</span>
+  </div>
+</div>
+
+<header class="site-header" id="site-header">
   <div class="container nav">
     <a href="index.html" class="logo">Maison</a>
     <nav class="nav-links">
       <a href="index.html#categories">Жінкам</a>
       <a href="index.html#categories">Чоловікам</a>
       <a href="index.html#bestsellers">Новинки</a>
+      <a href="index.html#atelier">Ательє</a>
       <a href="index.html#promo">Аутлет</a>
     </nav>
     <div class="nav-actions">
       <button type="button" class="search-trigger" aria-label="Пошук"><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i></button>
+      <button type="button" class="theme-toggle" aria-label="Змінити тему"><i class="fa-solid fa-moon" aria-hidden="true"></i></button>
       <button type="button" data-modal="account" aria-label="Акаунт"><i class="fa-solid fa-user" aria-hidden="true"></i></button>
       <a href="cart.html" aria-label="Кошик">
         <i class="fa-solid fa-bag-shopping" aria-hidden="true"></i>
@@ -45,19 +69,26 @@
     <a href="index.html#categories">Жінкам</a>
     <a href="index.html#categories">Чоловікам</a>
     <a href="index.html#bestsellers">Новинки</a>
-    <a href="index.html#promo">Аутлет</a>
+    <a href="index.html#atelier">Ательє</a>
     <a href="cart.html">Кошик</a>
   </nav>
+  <p class="mobile-menu-foot">Архів № 07 · Осінь 2026</p>
 </div>
 
 <main>
   <div class="container">
 
-    <p class="breadcrumb"><a href="index.html">Головна</a> / <span id="breadcrumb-category"></span> / <span id="breadcrumb-name"></span></p>
+    <p class="breadcrumb">
+      <a href="index.html">Головна</a>
+      <span aria-hidden="true">/</span>
+      <span id="breadcrumb-category"></span>
+      <span aria-hidden="true">/</span>
+      <span id="breadcrumb-name"></span>
+    </p>
 
     <section class="product-detail">
-      <div>
-        <div class="gallery-main swatch">
+      <div class="gallery-sticky" data-reveal="left">
+        <div class="gallery-main swatch" id="gallery-main">
           <i class="gallery-icon fa-solid fa-shirt" aria-hidden="true"></i>
           <span class="swatch-tag" id="gallery-tag"></span>
         </div>
@@ -69,28 +100,34 @@
         </div>
       </div>
 
-      <div class="product-info">
+      <div class="product-info" data-reveal="right">
         <div class="product-badge-row" id="product-badge-row"></div>
         <h1 id="product-name"></h1>
-        <p class="stock-note" id="stock-note"></p>
+        <p class="stock-note"><span class="stock-dot" aria-hidden="true"></span><span id="stock-note"></span></p>
 
         <div class="price-row">
           <span class="now price" id="price-now"></span>
           <span class="old price" id="price-old"></span>
+          <span class="save price" id="price-save"></span>
         </div>
 
         <p class="product-desc" id="product-desc"></p>
 
         <div class="option-group">
-          <p class="option-label">Розмір</p>
+          <div class="option-head">
+            <p class="option-label">Розмір</p>
+            <a href="#" class="link-arrow" data-modal="sizes">Розмірна сітка <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+          </div>
           <div class="size-list" id="size-list"></div>
         </div>
+
         <div class="option-group">
-          <p class="option-label">Колір</p>
+          <div class="option-head"><p class="option-label">Колір</p></div>
           <div class="color-list" id="color-list"></div>
         </div>
+
         <div class="option-group">
-          <p class="option-label">Кількість</p>
+          <div class="option-head"><p class="option-label">Кількість</p></div>
           <div class="qty-stepper">
             <button type="button" class="qty-minus" aria-label="Зменшити кількість">−</button>
             <span>1</span>
@@ -104,22 +141,39 @@
         </div>
         <p class="add-note" id="add-note"></p>
 
+        <div class="product-perks">
+          <div><i class="fa-solid fa-truck-fast" aria-hidden="true"></i><span>Доставка 1–3 дні</span></div>
+          <div><i class="fa-solid fa-rotate-left" aria-hidden="true"></i><span>Повернення 30 днів</span></div>
+          <div><i class="fa-solid fa-ruler" aria-hidden="true"></i><span>Обміри в сантиметрах</span></div>
+          <div><i class="fa-solid fa-leaf" aria-hidden="true"></i><span>Натуральна тканина</span></div>
+        </div>
+
         <div class="accordion">
           <div class="accordion-item">
-            <button type="button" class="accordion-trigger">Догляд за виробом <i class="fa-solid fa-chevron-down" aria-hidden="true"></i></button>
-            <div class="accordion-panel"><p id="care-text"></p></div>
+            <button type="button" class="accordion-trigger">Склад і догляд <i class="fa-solid fa-chevron-down" aria-hidden="true"></i></button>
+            <div class="accordion-panel"><div><p id="care-text"></p></div></div>
           </div>
           <div class="accordion-item">
             <button type="button" class="accordion-trigger">Доставка та повернення <i class="fa-solid fa-chevron-down" aria-hidden="true"></i></button>
-            <div class="accordion-panel"><p id="shipping-text"></p></div>
+            <div class="accordion-panel"><div><p id="shipping-text"></p></div></div>
+          </div>
+          <div class="accordion-item">
+            <button type="button" class="accordion-trigger">Крій і посадка <i class="fa-solid fa-chevron-down" aria-hidden="true"></i></button>
+            <div class="accordion-panel"><div><p id="fit-text"></p></div></div>
           </div>
         </div>
       </div>
     </section>
 
-    <section class="section" style="padding-top:0;">
-      <div class="section-head"><h2>Вам також може сподобатись</h2></div>
-      <div class="product-grid" id="related-grid"></div>
+    <section class="section section-tight">
+      <div class="section-head">
+        <div class="section-head-text" data-reveal="up">
+          <p class="eyebrow">Разом купують</p>
+          <h2>Вам також може сподобатись</h2>
+        </div>
+        <a href="index.html#bestsellers" class="link-arrow" data-reveal="up">Уся колекція <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+      </div>
+      <div class="product-grid" id="related-grid" data-stagger></div>
     </section>
 
   </div>
@@ -128,28 +182,28 @@
 <footer class="site-footer">
   <div class="container">
     <div class="footer-grid">
-      <div class="footer-col footer-brand">
-        <h4>Maison</h4>
+      <div class="footer-col footer-brand" data-reveal="up">
+        <span class="logo">Maison</span>
         <p>Ательє готового одягу. Натуральні тканини, точний крій, речі, які тримають форму сезон за сезоном.</p>
       </div>
-      <div class="footer-col">
+      <div class="footer-col" data-reveal="up" style="--reveal-delay:.06s">
         <h4>Клієнтам</h4>
         <a href="#" data-modal="shipping">Доставка та оплата</a>
         <a href="#" data-modal="returns">Повернення</a>
         <a href="#" data-modal="sizes">Розмірна сітка</a>
       </div>
-      <div class="footer-col">
+      <div class="footer-col" data-reveal="up" style="--reveal-delay:.12s">
         <h4>Компанія</h4>
         <a href="#" data-modal="about">Про ательє</a>
         <a href="#" data-modal="contact">Контакти</a>
         <a href="#" data-modal="careers">Вакансії</a>
       </div>
-      <div class="footer-col">
+      <div class="footer-col" data-reveal="up" style="--reveal-delay:.18s">
         <h4>Розсилка</h4>
         <p>Знижка 10% на перше замовлення</p>
         <div class="newsletter-form">
           <input type="email" placeholder="Ваш email" aria-label="Email для розсилки">
-          <button type="button" class="btn btn-primary btn-sm" aria-label="Підписатися"><i class="fa-solid fa-arrow-right" aria-hidden="true"></i></button>
+          <button type="button" class="btn btn-primary" aria-label="Підписатися"><i class="fa-solid fa-arrow-right" aria-hidden="true"></i></button>
         </div>
       </div>
     </div>
@@ -163,6 +217,8 @@
     </div>
   </div>
 </footer>
+
+<button type="button" class="to-top" id="to-top" aria-label="Вгору"><i class="fa-solid fa-arrow-up" aria-hidden="true"></i></button>
 
 <script src="script.js"></script>
 </body>

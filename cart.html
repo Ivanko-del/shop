@@ -5,27 +5,51 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Кошик — Maison</title>
 <meta name="description" content="Ваш кошик Maison: перевірте товари, кількість і суму перед оформленням замовлення.">
+<meta name="theme-color" content="#F6F4EF">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,600;1,600&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <link rel="stylesheet" href="styles.css">
+<script>
+  (function () {
+    document.documentElement.classList.add('js');
+    try {
+      var saved = localStorage.getItem('maison-theme');
+      var dark = saved ? saved === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+      if (dark) document.documentElement.dataset.theme = 'dark';
+    } catch (e) {}
+  })();
+</script>
 </head>
 <body>
 
-<div class="announcement">Безкоштовна доставка при замовленні від 2 000 ₴</div>
+<div class="scroll-progress" id="scroll-progress"></div>
 
-<header class="site-header">
+<div class="announcement">
+  <div class="announcement-track">
+    <span>Безкоштовна доставка від 2 000 ₴</span>
+    <span>Повернення протягом 30 днів</span>
+    <span>Промокод MAISON10 — знижка 10%</span>
+    <span>Безкоштовна доставка від 2 000 ₴</span>
+    <span>Повернення протягом 30 днів</span>
+    <span>Промокод MAISON10 — знижка 10%</span>
+  </div>
+</div>
+
+<header class="site-header" id="site-header">
   <div class="container nav">
     <a href="index.html" class="logo">Maison</a>
     <nav class="nav-links">
       <a href="index.html#categories">Жінкам</a>
       <a href="index.html#categories">Чоловікам</a>
       <a href="index.html#bestsellers">Новинки</a>
+      <a href="index.html#atelier">Ательє</a>
       <a href="index.html#promo">Аутлет</a>
     </nav>
     <div class="nav-actions">
       <button type="button" class="search-trigger" aria-label="Пошук"><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i></button>
+      <button type="button" class="theme-toggle" aria-label="Змінити тему"><i class="fa-solid fa-moon" aria-hidden="true"></i></button>
       <button type="button" data-modal="account" aria-label="Акаунт"><i class="fa-solid fa-user" aria-hidden="true"></i></button>
       <a href="cart.html" aria-label="Кошик">
         <i class="fa-solid fa-bag-shopping" aria-hidden="true"></i>
@@ -45,26 +69,30 @@
     <a href="index.html#categories">Жінкам</a>
     <a href="index.html#categories">Чоловікам</a>
     <a href="index.html#bestsellers">Новинки</a>
-    <a href="index.html#promo">Аутлет</a>
+    <a href="index.html#atelier">Ательє</a>
     <a href="cart.html">Кошик</a>
   </nav>
+  <p class="mobile-menu-foot">Архів № 07 · Осінь 2026</p>
 </div>
 
 <main>
   <div class="container">
-    <h1 class="cart-title">Кошик</h1>
-    <p class="cart-subtitle" id="cart-item-count"></p>
+    <div class="cart-head" data-reveal="up">
+      <p class="eyebrow">Крок 1 з 3</p>
+      <h1 class="cart-title">Кошик</h1>
+      <p class="cart-subtitle" id="cart-item-count"></p>
+    </div>
 
     <div class="cart-layout">
       <div>
         <div id="cart-items" class="cart-items">
 
-          <div class="cart-line" data-price="3450">
-            <div class="cart-line-media swatch"><i class="fa-solid fa-vest" aria-hidden="true"></i></div>
+          <div class="cart-line" data-price="3450" data-reveal="up">
+            <a class="cart-line-media swatch" href="product.html?id=jacket" aria-label="Куртка оверсайз"><i class="fa-solid fa-vest" aria-hidden="true"></i></a>
             <div>
               <div class="cart-line-top">
                 <div>
-                  <p class="cart-line-name">Куртка оверсайз</p>
+                  <p class="cart-line-name"><a href="product.html?id=jacket">Куртка оверсайз</a></p>
                   <p class="cart-line-meta">№ 012 · Розмір M · Чорний</p>
                 </div>
                 <button type="button" class="remove-btn" aria-label="Видалити з кошика"><i class="fa-solid fa-trash" aria-hidden="true"></i></button>
@@ -80,12 +108,12 @@
             </div>
           </div>
 
-          <div class="cart-line" data-price="960">
-            <div class="cart-line-media swatch"><i class="fa-solid fa-shirt" aria-hidden="true"></i></div>
+          <div class="cart-line" data-price="960" data-reveal="up" style="--reveal-delay:.08s">
+            <a class="cart-line-media swatch" href="product.html?id=shirt" aria-label="Лляна сорочка"><i class="fa-solid fa-shirt" aria-hidden="true"></i></a>
             <div>
               <div class="cart-line-top">
                 <div>
-                  <p class="cart-line-name">Лляна сорочка</p>
+                  <p class="cart-line-name"><a href="product.html?id=shirt">Лляна сорочка</a></p>
                   <p class="cart-line-meta">№ 004 · Розмір S · Білий</p>
                 </div>
                 <button type="button" class="remove-btn" aria-label="Видалити з кошика"><i class="fa-solid fa-trash" aria-hidden="true"></i></button>
@@ -106,16 +134,21 @@
         <div id="cart-empty" class="cart-empty">
           <i class="fa-solid fa-bag-shopping" aria-hidden="true"></i>
           <p>Ваш кошик порожній</p>
-          <a href="index.html" class="btn btn-primary">Продовжити покупки</a>
+          <a href="index.html" class="btn btn-primary">Продовжити покупки <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
         </div>
       </div>
 
-      <div id="order-summary" class="order-summary">
+      <div id="order-summary" class="order-summary" data-reveal="up" style="--reveal-delay:.12s">
         <h3>Разом</h3>
         <div class="summary-row"><span>Підсумок</span><span id="summary-subtotal"></span></div>
         <div class="summary-row" id="summary-discount-row" style="display:none;"><span>Знижка</span><span id="summary-discount"></span></div>
         <div class="summary-row"><span>Доставка</span><span id="summary-shipping"></span></div>
         <div class="summary-row total"><span>До сплати</span><span id="summary-total"></span></div>
+
+        <div class="ship-progress">
+          <div class="ship-progress-bar"><div id="ship-progress-fill"></div></div>
+          <p id="ship-progress-note"></p>
+        </div>
 
         <div class="promo-row">
           <input type="text" id="promo-input" placeholder="Промокод" aria-label="Промокод">
@@ -125,36 +158,47 @@
 
         <button type="button" class="btn btn-primary btn-block" id="checkout-btn">Оформити замовлення</button>
         <p class="checkout-msg" id="checkout-msg"></p>
+        <p class="summary-note">Спробуйте промокод MAISON10</p>
       </div>
     </div>
+
+    <section class="section section-tight">
+      <div class="section-head">
+        <div class="section-head-text" data-reveal="up">
+          <p class="eyebrow">Додати до замовлення</p>
+          <h2>Пасує до вашого кошика</h2>
+        </div>
+      </div>
+      <div class="product-grid" id="cart-suggest-grid" data-stagger></div>
+    </section>
   </div>
 </main>
 
 <footer class="site-footer">
   <div class="container">
     <div class="footer-grid">
-      <div class="footer-col footer-brand">
-        <h4>Maison</h4>
+      <div class="footer-col footer-brand" data-reveal="up">
+        <span class="logo">Maison</span>
         <p>Ательє готового одягу. Натуральні тканини, точний крій, речі, які тримають форму сезон за сезоном.</p>
       </div>
-      <div class="footer-col">
+      <div class="footer-col" data-reveal="up" style="--reveal-delay:.06s">
         <h4>Клієнтам</h4>
         <a href="#" data-modal="shipping">Доставка та оплата</a>
         <a href="#" data-modal="returns">Повернення</a>
         <a href="#" data-modal="sizes">Розмірна сітка</a>
       </div>
-      <div class="footer-col">
+      <div class="footer-col" data-reveal="up" style="--reveal-delay:.12s">
         <h4>Компанія</h4>
         <a href="#" data-modal="about">Про ательє</a>
         <a href="#" data-modal="contact">Контакти</a>
         <a href="#" data-modal="careers">Вакансії</a>
       </div>
-      <div class="footer-col">
+      <div class="footer-col" data-reveal="up" style="--reveal-delay:.18s">
         <h4>Розсилка</h4>
         <p>Знижка 10% на перше замовлення</p>
         <div class="newsletter-form">
           <input type="email" placeholder="Ваш email" aria-label="Email для розсилки">
-          <button type="button" class="btn btn-primary btn-sm" aria-label="Підписатися"><i class="fa-solid fa-arrow-right" aria-hidden="true"></i></button>
+          <button type="button" class="btn btn-primary" aria-label="Підписатися"><i class="fa-solid fa-arrow-right" aria-hidden="true"></i></button>
         </div>
       </div>
     </div>
@@ -168,6 +212,8 @@
     </div>
   </div>
 </footer>
+
+<button type="button" class="to-top" id="to-top" aria-label="Вгору"><i class="fa-solid fa-arrow-up" aria-hidden="true"></i></button>
 
 <script src="script.js"></script>
 </body>
