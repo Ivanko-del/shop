@@ -5,25 +5,20 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Кошик — Maison</title>
 <meta name="description" content="Ваш кошик Maison: перевірте товари, кількість і суму перед оформленням замовлення.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%277%27 fill=%27%23191814%27/%3E%3Ctext x=%2716%27 y=%2723%27 font-family=%27Georgia,serif%27 font-size=%2720%27 font-weight=%27600%27 fill=%27%23F6F4EF%27 text-anchor=%27middle%27%3EM%3C/text%3E%3Ccircle cx=%2725%27 cy=%278%27 r=%272.6%27 fill=%27%232F6B4F%27/%3E%3C/svg%3E">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data:; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="theme-color" content="#F6F4EF">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,600;1,600&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link referrerpolicy="no-referrer" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,600;1,600&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" referrerpolicy="no-referrer" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <link rel="stylesheet" href="styles.css">
-<script>
-  (function () {
-    document.documentElement.classList.add('js');
-    try {
-      var saved = localStorage.getItem('maison-theme');
-      var dark = saved ? saved === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
-      if (dark) document.documentElement.dataset.theme = 'dark';
-    } catch (e) {}
-  })();
-</script>
+<script src="theme-init.js"></script>
 </head>
 <body>
 
+<a class="skip-link" href="#main">Перейти до вмісту</a>
 <div class="scroll-progress" id="scroll-progress"></div>
 
 <div class="announcement">
@@ -55,12 +50,12 @@
         <i class="fa-solid fa-bag-shopping" aria-hidden="true"></i>
         <span class="cart-count">2</span>
       </a>
-      <button type="button" class="menu-toggle" aria-label="Відкрити меню"><i class="fa-solid fa-bars" aria-hidden="true"></i></button>
+      <button type="button" class="menu-toggle" aria-label="Відкрити меню" aria-expanded="false" aria-controls="mobile-menu"><i class="fa-solid fa-bars" aria-hidden="true"></i></button>
     </div>
   </div>
 </header>
 
-<div class="mobile-menu">
+<div class="mobile-menu" id="mobile-menu">
   <div class="mobile-menu-header">
     <span class="logo">Maison</span>
     <button type="button" class="mobile-menu-close" aria-label="Закрити меню"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
@@ -75,7 +70,7 @@
   <p class="mobile-menu-foot">Архів № 07 · Осінь 2026</p>
 </div>
 
-<main>
+<main id="main" tabindex="-1">
   <div class="container">
     <div class="cart-head" data-reveal="up">
       <p class="eyebrow">Крок 1 з 3</p>
@@ -108,7 +103,7 @@
             </div>
           </div>
 
-          <div class="cart-line" data-price="960" data-reveal="up" style="--reveal-delay:.08s">
+          <div class="cart-line rd-1" data-price="960" data-reveal="up">
             <a class="cart-line-media swatch" href="product.html?id=shirt" aria-label="Лляна сорочка"><i class="fa-solid fa-shirt" aria-hidden="true"></i></a>
             <div>
               <div class="cart-line-top">
@@ -138,10 +133,10 @@
         </div>
       </div>
 
-      <div id="order-summary" class="order-summary" data-reveal="up" style="--reveal-delay:.12s">
+      <div id="order-summary" class="order-summary rd-2" data-reveal="up" aria-live="polite">
         <h3>Разом</h3>
         <div class="summary-row"><span>Підсумок</span><span id="summary-subtotal"></span></div>
-        <div class="summary-row" id="summary-discount-row" style="display:none;"><span>Знижка</span><span id="summary-discount"></span></div>
+        <div class="summary-row" id="summary-discount-row" hidden><span>Знижка</span><span id="summary-discount"></span></div>
         <div class="summary-row"><span>Доставка</span><span id="summary-shipping"></span></div>
         <div class="summary-row total"><span>До сплати</span><span id="summary-total"></span></div>
 
@@ -181,24 +176,25 @@
         <span class="logo">Maison</span>
         <p>Ательє готового одягу. Натуральні тканини, точний крій, речі, які тримають форму сезон за сезоном.</p>
       </div>
-      <div class="footer-col" data-reveal="up" style="--reveal-delay:.06s">
+      <div class="footer-col rd-1" data-reveal="up">
         <h4>Клієнтам</h4>
         <a href="#" data-modal="shipping">Доставка та оплата</a>
         <a href="#" data-modal="returns">Повернення</a>
         <a href="#" data-modal="sizes">Розмірна сітка</a>
       </div>
-      <div class="footer-col" data-reveal="up" style="--reveal-delay:.12s">
+      <div class="footer-col rd-2" data-reveal="up">
         <h4>Компанія</h4>
         <a href="#" data-modal="about">Про ательє</a>
         <a href="#" data-modal="contact">Контакти</a>
         <a href="#" data-modal="careers">Вакансії</a>
       </div>
-      <div class="footer-col" data-reveal="up" style="--reveal-delay:.18s">
+      <div class="footer-col rd-3" data-reveal="up">
         <h4>Розсилка</h4>
         <p>Знижка 10% на перше замовлення</p>
         <div class="newsletter-form">
           <input type="email" placeholder="Ваш email" aria-label="Email для розсилки">
           <button type="button" class="btn btn-primary" aria-label="Підписатися"><i class="fa-solid fa-arrow-right" aria-hidden="true"></i></button>
+          <p class="newsletter-msg" role="status"></p>
         </div>
       </div>
     </div>

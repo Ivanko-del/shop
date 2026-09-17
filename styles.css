@@ -232,7 +232,6 @@ p  { margin: 0; }
 @keyframes fade        { from { opacity: 0; } to { opacity: 1; } }
 @keyframes float-y     { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-14px); } }
 @keyframes float-y-alt { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(10px); } }
-@keyframes spin-slow   { to { transform: rotate(360deg); } }
 @keyframes marquee     { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 @keyframes shimmer     { from { background-position: -160% 0; } to { background-position: 260% 0; } }
 @keyframes pop         { 0% { transform: scale(1); } 40% { transform: scale(1.32); } 100% { transform: scale(1); } }
@@ -525,11 +524,12 @@ p  { margin: 0; }
 .hero-meta-item strong { display: block; font-family: var(--font-display); font-size: 27px; font-weight: 600; line-height: 1.1; }
 .hero-meta-item span { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: .09em; text-transform: uppercase; color: var(--ink-3); }
 
-.hero-visual { position: relative; }
+/* the floating cards sit at left/right:-6px, so the stage needs a gutter at
+   every width or they poke past the container */
+.hero-visual { position: relative; padding: 0 16px; }
 .hero-media {
   aspect-ratio: 4 / 5; border-radius: var(--radius-xl);
   box-shadow: var(--shadow-lg);
-  will-change: transform;
 }
 .hero-media > i { font-size: clamp(64px, 12vw, 116px); }
 .hero-media::before {
@@ -543,21 +543,11 @@ p  { margin: 0; }
   box-shadow: var(--shadow-md);
   will-change: transform;
 }
-.hero-float-1 { top: 8%; left: -6px; animation: float-y 6.5s var(--ease-in-out) infinite; }
-.hero-float-2 { bottom: 9%; right: -6px; animation: float-y-alt 7.5s var(--ease-in-out) infinite; }
+.hero-float-1 { top: 8%; left: -6px; }
+.hero-float-2 { bottom: 9%; right: -6px; }
 .hero-float p { font-size: 12.5px; font-weight: 500; }
 .hero-float small { display: block; font-family: var(--font-mono); font-size: 10px; color: var(--ink-3); letter-spacing: .05em; }
 .hero-float .stars { color: var(--gold); font-size: 10px; letter-spacing: 2px; }
-
-.hero-badge {
-  position: absolute; z-index: 3; right: 12%; top: -14px;
-  width: 92px; height: 92px; border-radius: 50%;
-  display: grid; place-items: center; text-align: center;
-  background: var(--inverse-bg); color: var(--inverse-fg);
-  font-family: var(--font-mono); font-size: 9.5px; line-height: 1.5;
-  letter-spacing: .1em; text-transform: uppercase;
-  animation: spin-slow 26s linear infinite;
-}
 
 .scroll-cue {
   display: none; position: absolute; left: 50%; bottom: 10px;
@@ -1117,7 +1107,19 @@ body.modal-open { overflow: hidden; }
   /* a full-width block sliding in sideways would push past the viewport,
      and reads worse than a lift in a single-column layout */
   .js [data-reveal="left"], .js [data-reveal="right"] { transform: translate3d(0, 30px, 0); }
+
+  /* single-column hero: the stage is as wide as the container, so the float
+     cards move inside it and lose most of their depth — a translateZ under a
+     perspective scales the element up and pushes it away from the origin */
+  .hero-float-1 { left: 26px; }
+  .hero-float-2 { right: 26px; }
+  .hero-stage .hero-float-1 { animation-name: float-z-near-1; }
+  .hero-stage .hero-float-2 { animation-name: float-z-near-2; }
+  .hero-stage .hero-float-1, .hero-stage .hero-float-2 { transform: translateZ(40px); }
+  .cube-wrap { transform: translateZ(60px); }
 }
+@keyframes float-z-near-1 { 0%, 100% { transform: translateZ(34px) translateY(0); } 50% { transform: translateZ(34px) translateY(-12px); } }
+@keyframes float-z-near-2 { 0%, 100% { transform: translateZ(46px) translateY(0); } 50% { transform: translateZ(46px) translateY(9px); } }
 
 @media (max-width: 420px) {
   .container { padding: 0 16px; }
@@ -1129,9 +1131,265 @@ body.modal-open { overflow: hidden; }
   .trust-bar { grid-template-columns: 1fr; }
   .hero-meta { gap: 20px; }
   .hero-float { padding: 11px 13px; }
-  .hero-badge { width: 74px; height: 74px; font-size: 8px; }
+  .cube { width: 62px; height: 62px; }
+  .cube-face { font-size: 7.5px; }
+  .cube-face:nth-child(1) { transform: translateZ(31px); }
+  .cube-face:nth-child(2) { transform: rotateY(90deg) translateZ(31px); }
+  .cube-face:nth-child(3) { transform: rotateY(180deg) translateZ(31px); }
+  .cube-face:nth-child(4) { transform: rotateY(-90deg) translateZ(31px); }
+  .cube-face:nth-child(5) { transform: rotateX(90deg) translateZ(31px); }
+  .cube-face:nth-child(6) { transform: rotateX(-90deg) translateZ(31px); }
   .gallery-thumbs button { width: 58px; height: 66px; }
   .promo-countdown div { min-width: 60px; }
   .editorial { padding: 24px 18px; }
   .order-summary { padding: 22px 18px; }
 }
+
+/* ==========================================================================
+   9. DEPTH — 3D stages, pointer tilt and layered parallax
+   ========================================================================== */
+
+/* A "stage" owns the perspective; the element inside it does the rotating.
+   Depth layers must be direct children of the rotating element, because
+   overflow:hidden (on .swatch) flattens its own 3D children. */
+.tilt-stage { perspective: 1000px; perspective-origin: 50% 50%; }
+
+[data-tilt] {
+  transform-style: preserve-3d;
+  transition: transform var(--t-slow) var(--ease), box-shadow var(--t-slow) var(--ease);
+  will-change: transform;
+}
+[data-tilt].tilting { transition: transform .1s linear, box-shadow var(--t-mid) var(--ease); }
+
+/* travelling highlight that sells the surface angle */
+.tilt-glare {
+  position: absolute; inset: 0; z-index: 4; pointer-events: none;
+  border-radius: inherit; opacity: 0;
+  background: radial-gradient(420px circle at var(--glare-x, 50%) var(--glare-y, 50%),
+              rgba(255, 255, 255, .34), transparent 62%);
+  transition: opacity var(--t-mid) var(--ease);
+  transform: translateZ(2px);
+}
+:root[data-theme="dark"] .tilt-glare {
+  background: radial-gradient(420px circle at var(--glare-x, 50%) var(--glare-y, 50%),
+              rgba(255, 255, 255, .11), transparent 62%);
+}
+[data-tilt].tilting .tilt-glare { opacity: 1; }
+
+/* --- hero: a real 3D composition --------------------------------------- */
+.hero-visual { perspective: 1200px; perspective-origin: 50% 45%; }
+.hero-stage { position: relative; transform-style: preserve-3d; }
+.hero-stage .hero-media { transform: translateZ(0); }
+.hero-stage .hero-float-1 { transform: translateZ(80px); }
+.hero-stage .hero-float-2 { transform: translateZ(110px); }
+.hero-stage .cube-wrap { transform: translateZ(150px); }
+.hero-stage.tilting .hero-media { box-shadow: var(--shadow-lg), 0 40px 80px rgba(25, 24, 20, .12); }
+
+/* the float animations have to carry the depth too, or they'd flatten it */
+@keyframes float-z-1 { 0%, 100% { transform: translateZ(80px) translateY(0); } 50% { transform: translateZ(80px) translateY(-14px); } }
+@keyframes float-z-2 { 0%, 100% { transform: translateZ(110px) translateY(0); } 50% { transform: translateZ(110px) translateY(11px); } }
+.hero-stage .hero-float-1 { animation: float-z-1 6.5s var(--ease-in-out) infinite; }
+.hero-stage .hero-float-2 { animation: float-z-2 7.5s var(--ease-in-out) infinite; }
+
+/* --- spinning cube ------------------------------------------------------ */
+.cube-wrap { position: absolute; top: -26px; right: 8%; z-index: 5; perspective: 460px; }
+.cube {
+  position: relative; width: 78px; height: 78px;
+  transform-style: preserve-3d;
+  animation: cube-spin 20s linear infinite;
+}
+.cube-face {
+  position: absolute; inset: 0;
+  display: grid; place-items: center; text-align: center;
+  background: var(--inverse-bg); color: var(--inverse-fg);
+  border: 1px solid var(--inverse-line);
+  font-family: var(--font-mono); font-size: 8.5px; line-height: 1.45;
+  letter-spacing: .12em; text-transform: uppercase;
+  backface-visibility: visible;
+}
+.cube-face:nth-child(1) { transform: translateZ(39px); }
+.cube-face:nth-child(2) { transform: rotateY(90deg)  translateZ(39px); background: var(--accent); color: var(--inverse-bg); }
+.cube-face:nth-child(3) { transform: rotateY(180deg) translateZ(39px); }
+.cube-face:nth-child(4) { transform: rotateY(-90deg) translateZ(39px); background: var(--accent); color: var(--inverse-bg); }
+.cube-face:nth-child(5) { transform: rotateX(90deg)  translateZ(39px); }
+.cube-face:nth-child(6) { transform: rotateX(-90deg) translateZ(39px); }
+@keyframes cube-spin {
+  from { transform: rotateX(-18deg) rotateY(0deg); }
+  to   { transform: rotateX(-18deg) rotateY(360deg); }
+}
+.cube:hover { animation-play-state: paused; }
+
+/* --- product & category cards ------------------------------------------ */
+/* perspective only reaches DIRECT children, so it lives on the element that
+   actually contains the tilting stage */
+.product-card { position: relative; }
+.product-link { display: block; perspective: 1000px; }
+.category-card { perspective: 1000px; }
+.product-stage, .category-stage {
+  position: relative; transform-style: preserve-3d;
+  transition: transform var(--t-slow) var(--ease);
+  margin-bottom: 14px;
+}
+.product-stage .product-media, .category-stage .category-media { margin-bottom: 0; transform: translateZ(0); }
+.product-stage .badge, .product-stage .quick-view { transform: translateZ(48px); }
+.category-stage .swatch-tag { transform: translateZ(40px); }
+/* the lift lives on the card, not the stage: the stage's transform is owned
+   by the pointer tilt and the two would overwrite each other */
+.product-card, .category-card { transition: transform var(--t-slow) var(--ease); }
+.product-card:hover, .category-card:hover { transform: translateY(-8px); }
+.product-card:hover .product-media, .category-card:hover .category-media { box-shadow: var(--shadow-md); }
+
+/* --- gallery, quotes, trust, editorial --------------------------------- */
+.gallery-stage { perspective: 1100px; margin-bottom: 12px; }
+.gallery-stage .gallery-main { margin-bottom: 0; }
+
+.quote-grid { perspective: 1400px; }
+.quote-card { transform-style: preserve-3d; }
+.quote-card blockquote, .quote-card .quote-author { transform: translateZ(22px); }
+
+.trust-bar { perspective: 900px; }
+.trust-item { transform-style: preserve-3d; }
+.trust-item:hover i { transform: translateZ(26px) scale(1.1) rotate(-8deg); }
+
+.editorial { perspective: 1400px; }
+.editorial-media { transform-style: preserve-3d; transition: transform var(--t-slow) var(--ease); }
+.editorial-media:hover { transform: rotateY(-5deg) rotateX(3deg) translateZ(18px); }
+
+/* --- promo banner: layered depth --------------------------------------- */
+.promo-banner { perspective: 1200px; }
+.promo-inner { transform-style: preserve-3d; }
+.promo-inner h2 { transform: translateZ(46px); }
+.promo-inner .promo-countdown { transform: translateZ(28px); }
+.promo-inner > .btn { transform: translateZ(60px); }
+
+/* --- overlays open with a hinge ---------------------------------------- */
+.modal-overlay, .search-overlay { perspective: 1600px; }
+.modal, .search-panel { transform: translateY(20px) rotateX(-9deg) scale(.96); transform-origin: 50% 0; }
+.modal-overlay.open .modal, .search-overlay.open .search-panel { transform: none; }
+
+.mobile-menu { transform-origin: right center; }
+@media (max-width: 899px) {
+  .mobile-menu { transform: perspective(1400px) translateX(100%) rotateY(-14deg); }
+  .mobile-menu.open { transform: perspective(1400px) translateX(0) rotateY(0deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-tilt], .cube, .editorial-media, .promo-inner > *,
+  .hero-stage .hero-float-1, .hero-stage .hero-float-2 { transform: none !important; animation: none !important; }
+  .tilt-glare { display: none; }
+  .modal, .search-panel { transform: none; }
+}
+
+/* ==========================================================================
+   10. USABILITY
+   ========================================================================== */
+
+/* reveal delays as classes — no inline style attributes, so the CSP can
+   keep style-src strict */
+.rd-1 { --reveal-delay: .06s; }
+.rd-2 { --reveal-delay: .12s; }
+.rd-3 { --reveal-delay: .18s; }
+.rd-4 { --reveal-delay: .24s; }
+.rd-5 { --reveal-delay: .30s; }
+.is-gone { display: none !important; }
+
+.visually-hidden {
+  position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0;
+  overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0;
+}
+
+.skip-link {
+  position: fixed; top: 8px; left: 50%; z-index: 300;
+  transform: translate(-50%, -160%);
+  padding: 11px 20px; border-radius: 100px;
+  background: var(--accent); color: #F7F7F3;
+  font-size: 13px; font-weight: 500; box-shadow: var(--shadow-md);
+  transition: transform var(--t-mid) var(--ease-spring);
+}
+.skip-link:focus { transform: translate(-50%, 0); }
+:root[data-theme="dark"] .skip-link { color: #10160F; }
+
+/* --- quick add straight from a card ------------------------------------ */
+.card-add {
+  position: absolute; top: 10px; right: 10px; z-index: 6;
+  width: 38px; height: 38px; border-radius: 50%;
+  display: grid; place-items: center; cursor: pointer;
+  background: var(--glass); backdrop-filter: blur(10px);
+  border: 1px solid var(--line); color: var(--ink); font-size: 13px;
+  opacity: 0; transform: scale(.8);
+  transition: opacity var(--t-mid) var(--ease), transform var(--t-mid) var(--ease-spring),
+              background-color var(--t-mid) var(--ease), color var(--t-mid) var(--ease);
+}
+.product-card:hover .card-add, .product-card:focus-within .card-add { opacity: 1; transform: scale(1); }
+.card-add:hover { background: var(--accent); border-color: var(--accent); color: #F7F7F3; }
+:root[data-theme="dark"] .card-add:hover { color: #10160F; }
+@media (hover: none) { .card-add { opacity: 1; transform: scale(1); } }
+
+/* --- sticky buy bar on narrow product pages ---------------------------- */
+.buy-bar {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 58;
+  display: flex; align-items: center; gap: 14px;
+  padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
+  background: var(--glass); backdrop-filter: blur(16px);
+  border-top: 1px solid var(--line);
+  transform: translateY(110%); transition: transform var(--t-slow) var(--ease);
+}
+.buy-bar.show { transform: none; }
+.buy-bar-info { min-width: 0; }
+.buy-bar-name { font-size: 13px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.buy-bar-price { font-family: var(--font-mono); font-size: 13px; color: var(--ink-2); }
+.buy-bar .btn { margin-left: auto; flex: 0 0 auto; }
+@media (min-width: 900px) { .buy-bar { display: none; } }
+
+/* --- toast with an action ---------------------------------------------- */
+.toast-action {
+  flex: 0 0 auto; margin-left: 4px; padding: 6px 13px;
+  border: 1px solid var(--inverse-line); border-radius: 100px;
+  background: var(--inverse-fill); color: var(--inverse-fg);
+  font-size: 12px; font-weight: 500; cursor: pointer;
+  transition: background-color var(--t-fast) var(--ease);
+}
+.toast-action:hover { background: rgba(255, 255, 255, .18); }
+
+/* --- keyboard navigation in search ------------------------------------- */
+.search-result.is-active { background: var(--stone); transform: translateX(4px); }
+.search-result.is-active .search-result-go { color: var(--accent); }
+.search-meta {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  padding: 10px 14px; border-top: 1px solid var(--line);
+  font-family: var(--font-mono); font-size: 10.5px; color: var(--ink-3); letter-spacing: .04em;
+}
+.search-meta kbd {
+  padding: 2px 6px; border: 1px solid var(--line-2); border-radius: 4px;
+  background: var(--stone); font-family: var(--font-mono); font-size: 10px;
+}
+
+/* --- free-shipping hint on the product page ---------------------------- */
+.ship-hint {
+  display: flex; align-items: center; gap: 10px; margin-top: 14px;
+  font-family: var(--font-mono); font-size: 11.5px; color: var(--ink-2); letter-spacing: .03em;
+}
+.ship-hint i { color: var(--accent); }
+
+/* --- form field errors ------------------------------------------------- */
+.field-error { border-color: var(--signal) !important; }
+.newsletter-form { flex-wrap: wrap; }
+.newsletter-msg { flex: 1 0 100%; font-family: var(--font-mono); font-size: 11px; min-height: 16px; }
+.newsletter-msg.error { color: var(--signal); }
+.newsletter-msg.success { color: var(--accent); }
+
+/* class-driven visibility, so nothing needs an inline style attribute */
+[hidden] { display: none !important; }
+.cart-empty.is-shown { display: block; }
+.checkout-msg.is-shown { display: block; }
+.product-card.is-hidden { display: none; }
+.filter-tabs button[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: var(--paper); }
+
+/* the sticky buy bar must not sit on top of the footer or the to-top button */
+@media (max-width: 899px) {
+  body:has(.buy-bar) .site-footer { padding-bottom: 92px; }
+  .buy-bar.show ~ .to-top { bottom: 92px; }
+}
+
+/* float-2 hangs over the bottom-right of the hero tile, so its caption moves */
+.hero-media .swatch-tag { right: auto; left: 12px; }

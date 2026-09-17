@@ -5,25 +5,20 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Товар — Maison</title>
 <meta name="description" content="Картка товару Maison: розміри, кольори, склад тканини та догляд.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%277%27 fill=%27%23191814%27/%3E%3Ctext x=%2716%27 y=%2723%27 font-family=%27Georgia,serif%27 font-size=%2720%27 font-weight=%27600%27 fill=%27%23F6F4EF%27 text-anchor=%27middle%27%3EM%3C/text%3E%3Ccircle cx=%2725%27 cy=%278%27 r=%272.6%27 fill=%27%232F6B4F%27/%3E%3C/svg%3E">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data:; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="theme-color" content="#F6F4EF">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,600;1,600&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link referrerpolicy="no-referrer" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,600;1,600&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" referrerpolicy="no-referrer" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <link rel="stylesheet" href="styles.css">
-<script>
-  (function () {
-    document.documentElement.classList.add('js');
-    try {
-      var saved = localStorage.getItem('maison-theme');
-      var dark = saved ? saved === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
-      if (dark) document.documentElement.dataset.theme = 'dark';
-    } catch (e) {}
-  })();
-</script>
+<script src="theme-init.js"></script>
 </head>
 <body>
 
+<a class="skip-link" href="#main">Перейти до вмісту</a>
 <div class="scroll-progress" id="scroll-progress"></div>
 
 <div class="announcement">
@@ -55,12 +50,12 @@
         <i class="fa-solid fa-bag-shopping" aria-hidden="true"></i>
         <span class="cart-count">2</span>
       </a>
-      <button type="button" class="menu-toggle" aria-label="Відкрити меню"><i class="fa-solid fa-bars" aria-hidden="true"></i></button>
+      <button type="button" class="menu-toggle" aria-label="Відкрити меню" aria-expanded="false" aria-controls="mobile-menu"><i class="fa-solid fa-bars" aria-hidden="true"></i></button>
     </div>
   </div>
 </header>
 
-<div class="mobile-menu">
+<div class="mobile-menu" id="mobile-menu">
   <div class="mobile-menu-header">
     <span class="logo">Maison</span>
     <button type="button" class="mobile-menu-close" aria-label="Закрити меню"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
@@ -75,7 +70,7 @@
   <p class="mobile-menu-foot">Архів № 07 · Осінь 2026</p>
 </div>
 
-<main>
+<main id="main" tabindex="-1">
   <div class="container">
 
     <p class="breadcrumb">
@@ -88,9 +83,12 @@
 
     <section class="product-detail">
       <div class="gallery-sticky" data-reveal="left">
-        <div class="gallery-main swatch" id="gallery-main">
-          <i class="gallery-icon fa-solid fa-shirt" aria-hidden="true"></i>
-          <span class="swatch-tag" id="gallery-tag"></span>
+        <div class="gallery-stage" data-tilt="6">
+          <div class="gallery-main swatch" id="gallery-main">
+            <i class="gallery-icon fa-solid fa-shirt" aria-hidden="true"></i>
+            <span class="swatch-tag" id="gallery-tag"></span>
+            <span class="tilt-glare" aria-hidden="true"></span>
+          </div>
         </div>
         <div class="gallery-thumbs">
           <button type="button" class="swatch active" aria-label="Вигляд спереду"><i class="gallery-icon fa-solid fa-shirt" aria-hidden="true"></i></button>
@@ -139,7 +137,8 @@
           <button type="button" class="btn btn-primary" id="add-to-cart-btn">Додати в кошик</button>
           <button type="button" id="wishlist-btn" class="btn-icon" aria-label="Додати в обране"><i class="fa-regular fa-heart" aria-hidden="true"></i></button>
         </div>
-        <p class="add-note" id="add-note"></p>
+        <p class="add-note" id="add-note" role="status"></p>
+        <p class="ship-hint"><i class="fa-solid fa-truck-fast" aria-hidden="true"></i><span id="ship-hint-text"></span></p>
 
         <div class="product-perks">
           <div><i class="fa-solid fa-truck-fast" aria-hidden="true"></i><span>Доставка 1–3 дні</span></div>
@@ -150,15 +149,15 @@
 
         <div class="accordion">
           <div class="accordion-item">
-            <button type="button" class="accordion-trigger">Склад і догляд <i class="fa-solid fa-chevron-down" aria-hidden="true"></i></button>
+            <button type="button" class="accordion-trigger" aria-expanded="false">Склад і догляд <i class="fa-solid fa-chevron-down" aria-hidden="true"></i></button>
             <div class="accordion-panel"><div><p id="care-text"></p></div></div>
           </div>
           <div class="accordion-item">
-            <button type="button" class="accordion-trigger">Доставка та повернення <i class="fa-solid fa-chevron-down" aria-hidden="true"></i></button>
+            <button type="button" class="accordion-trigger" aria-expanded="false">Доставка та повернення <i class="fa-solid fa-chevron-down" aria-hidden="true"></i></button>
             <div class="accordion-panel"><div><p id="shipping-text"></p></div></div>
           </div>
           <div class="accordion-item">
-            <button type="button" class="accordion-trigger">Крій і посадка <i class="fa-solid fa-chevron-down" aria-hidden="true"></i></button>
+            <button type="button" class="accordion-trigger" aria-expanded="false">Крій і посадка <i class="fa-solid fa-chevron-down" aria-hidden="true"></i></button>
             <div class="accordion-panel"><div><p id="fit-text"></p></div></div>
           </div>
         </div>
@@ -186,24 +185,25 @@
         <span class="logo">Maison</span>
         <p>Ательє готового одягу. Натуральні тканини, точний крій, речі, які тримають форму сезон за сезоном.</p>
       </div>
-      <div class="footer-col" data-reveal="up" style="--reveal-delay:.06s">
+      <div class="footer-col rd-1" data-reveal="up">
         <h4>Клієнтам</h4>
         <a href="#" data-modal="shipping">Доставка та оплата</a>
         <a href="#" data-modal="returns">Повернення</a>
         <a href="#" data-modal="sizes">Розмірна сітка</a>
       </div>
-      <div class="footer-col" data-reveal="up" style="--reveal-delay:.12s">
+      <div class="footer-col rd-2" data-reveal="up">
         <h4>Компанія</h4>
         <a href="#" data-modal="about">Про ательє</a>
         <a href="#" data-modal="contact">Контакти</a>
         <a href="#" data-modal="careers">Вакансії</a>
       </div>
-      <div class="footer-col" data-reveal="up" style="--reveal-delay:.18s">
+      <div class="footer-col rd-3" data-reveal="up">
         <h4>Розсилка</h4>
         <p>Знижка 10% на перше замовлення</p>
         <div class="newsletter-form">
           <input type="email" placeholder="Ваш email" aria-label="Email для розсилки">
           <button type="button" class="btn btn-primary" aria-label="Підписатися"><i class="fa-solid fa-arrow-right" aria-hidden="true"></i></button>
+          <p class="newsletter-msg" role="status"></p>
         </div>
       </div>
     </div>
@@ -217,6 +217,14 @@
     </div>
   </div>
 </footer>
+
+<div class="buy-bar" id="buy-bar">
+  <div class="buy-bar-info">
+    <p class="buy-bar-name" id="buy-bar-name"></p>
+    <p class="buy-bar-price price" id="buy-bar-price"></p>
+  </div>
+  <button type="button" class="btn btn-primary btn-sm" id="buy-bar-btn">В кошик</button>
+</div>
 
 <button type="button" class="to-top" id="to-top" aria-label="Вгору"><i class="fa-solid fa-arrow-up" aria-hidden="true"></i></button>
 
