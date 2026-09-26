@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /cart.html
+Disallow: /checkout.html
+Disallow: /wishlist.html
+
+Sitemap: https://shop-xi-one-17.vercel.app/sitemap.xml

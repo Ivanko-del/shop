@@ -1,0 +1,13 @@
+{
+  "name": "maison-storefront",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Demo storefront — static HTML, CSS and vanilla JS, no build step.",
+  "scripts": {
+    "start": "python3 -m http.server 8777",
+    "test": "node tests/smoke.mjs"
+  },
+  "devDependencies": {
+    "playwright": "^1.49.0"
+  }
+}

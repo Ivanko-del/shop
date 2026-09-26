@@ -1,113 +1,20 @@
 /* ==========================================================================
-   Maison — catalogue data, UI logic and motion
+   Maison — UI logic and motion
+   The catalogue itself lives in data.js, which every page loads first.
    ========================================================================== */
-
-const PRODUCTS = {
-  jacket: {
-    id: 'jacket', category: 'Верхній одяг', line: 'women', name: 'Куртка оверсайз',
-    price: 3450, oldPrice: null, badge: 'new',
-    code: '№ 012', material: 'ВОВНА 60%', stock: 8,
-    icon: 'fa-solid fa-vest',
-    desc: 'Просторий крій, щільна тканина з легким начосом і мінімалістична фурнітура. Куртка, яка однаково добре виглядає з денімом і зі строгими брюками.',
-    sizes: ['XS', 'S', 'M', 'L', 'XL'],
-    colors: [{ name: 'Чорний', hex: '#22221F' }, { name: 'Бежевий', hex: '#D8CBB4' }, { name: 'Оливковий', hex: '#6B7455' }],
-    care: 'Склад: вовна 60%, поліамід 40%. Пране при 30°C, не відбілювати, прасувати з виворітної сторони при середній температурі. Не сушити в сушильній машині.',
-    shipping: 'Доставка Новою поштою — 1–3 дні. Безкоштовно при замовленні від 2 000 ₴. Обмін і повернення протягом 30 днів у первісному вигляді.',
-    fit: 'Оверсайз. Модель на фото має зріст 178 см і носить розмір S. Якщо хочете щільнішу посадку — беріть на розмір менше.'
-  },
-  shirt: {
-    id: 'shirt', category: 'Сорочки', line: 'men', name: 'Лляна сорочка',
-    price: 960, oldPrice: 1200, badge: 'sale',
-    code: '№ 004', material: 'ЛЬОН 100%', stock: 23,
-    icon: 'fa-solid fa-shirt',
-    desc: '100% льон щільного плетіння. Вільний крій, накладні кишені, перламутрові ґудзики. Дихаюча тканина для теплої погоди.',
-    sizes: ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
-    colors: [{ name: 'Білий', hex: '#F2EFE7' }, { name: 'Блакитний', hex: '#A8BFCE' }, { name: 'Хакі', hex: '#8A8A6C' }],
-    care: 'Склад: льон 100%. Машинне прання при 30°C у делікатному режимі. Прасувати, поки тканина ще волога.',
-    shipping: 'Доставка Новою поштою — 1–3 дні. Безкоштовно при замовленні від 2 000 ₴. Обмін і повернення протягом 30 днів.',
-    fit: 'Вільна посадка. Льон трохи сідає після першого прання — сітка вже враховує це.'
-  },
-  dress: {
-    id: 'dress', category: 'Сукні', line: 'women', name: 'Сукня міді',
-    price: 1890, oldPrice: null, badge: null,
-    code: '№ 021', material: 'ВІСКОЗА 95%', stock: 14,
-    icon: 'fa-solid fa-person-dress',
-    desc: 'Приталений силует, розкльошена спідниця довжини міді, прихована блискавка ззаду. З віскози з легким матовим блиском.',
-    sizes: ['XS', 'S', 'M', 'L'],
-    colors: [{ name: 'Чорний', hex: '#22221F' }, { name: 'Бордовий', hex: '#6E2A31' }],
-    care: 'Склад: віскоза 95%, еластан 5%. Делікатне ручне прання при 30°C або хімчистка. Не викручувати, сушити горизонтально.',
-    shipping: 'Доставка Новою поштою — 1–3 дні. Безкоштовно при замовленні від 2 000 ₴. Обмін і повернення протягом 30 днів.',
-    fit: 'Приталена посадка по лінії грудей і талії. Довжина міді — 112 см для розміру S.'
-  },
-  shoes: {
-    id: 'shoes', category: 'Взуття', line: 'men', name: 'Кросівки класик',
-    price: 2100, oldPrice: null, badge: null,
-    code: '№ 038', material: 'ШКІРА 100%', stock: 19,
-    icon: 'fa-solid fa-shoe-prints',
-    desc: 'Мінімалістичні шкіряні кросівки на гумовій підошві. Класична колодка, зручна для щоденного носіння.',
-    sizes: ['38', '39', '40', '41', '42', '43', '44'],
-    colors: [{ name: 'Білий', hex: '#F2EFE7' }, { name: 'Чорний', hex: '#22221F' }],
-    care: 'Верх: шкіра 100%, підошва: гума. Протирати вологою тканиною. Водовідштовхувальний спрей раз на сезон.',
-    shipping: 'Доставка Новою поштою — 1–3 дні. Безкоштовно при замовленні від 2 000 ₴. Обмін і повернення протягом 30 днів.',
-    fit: 'Розмір у розмір. Для широкої стопи радимо брати на пів розміру більше.'
-  },
-  coat: {
-    id: 'coat', category: 'Верхній одяг', line: 'women', name: 'Пальто-халат',
-    price: 5200, oldPrice: 6500, badge: 'sale',
-    code: '№ 007', material: 'ВОВНА 80%', stock: 5,
-    icon: 'fa-solid fa-user-tie',
-    desc: 'Пальто без ґудзиків, із поясом у тон. Щільна вовняна тканина тримає силует, підкладка з віскози дає ковзання по одягу.',
-    sizes: ['S', 'M', 'L', 'XL'],
-    colors: [{ name: 'Camel', hex: '#B2875A' }, { name: 'Графіт', hex: '#4A4A46' }],
-    care: 'Склад: вовна 80%, поліестер 20%. Тільки хімчистка. Зберігати на плічках у чохлі.',
-    shipping: 'Доставка Новою поштою — 1–3 дні. Безкоштовно при замовленні від 2 000 ₴. Обмін і повернення протягом 30 днів.',
-    fit: 'Пряма посадка з запасом на светр. Довжина — 118 см для розміру M.'
-  },
-  trousers: {
-    id: 'trousers', category: 'Брюки', line: 'men', name: 'Брюки прямі',
-    price: 1740, oldPrice: null, badge: 'new',
-    code: '№ 029', material: 'БАВОВНА 98%', stock: 16,
-    icon: 'fa-solid fa-socks',
-    desc: 'Щільна костюмна бавовна, прямий крій від стегна, защипи спереду. Тримають складку без прасування після кожного носіння.',
-    sizes: ['S', 'M', 'L', 'XL', 'XXL'],
-    colors: [{ name: 'Пісочний', hex: '#C8B79A' }, { name: 'Чорний', hex: '#22221F' }, { name: 'Синій', hex: '#3C4A63' }],
-    care: 'Склад: бавовна 98%, еластан 2%. Прання при 30°C, прасувати через тканину.',
-    shipping: 'Доставка Новою поштою — 1–3 дні. Безкоштовно при замовленні від 2 000 ₴. Обмін і повернення протягом 30 днів.',
-    fit: 'Посадка на талії. Довжина по внутрішньому шву — 78 см, підшивку робимо безкоштовно.'
-  },
-  scarf: {
-    id: 'scarf', category: 'Аксесуари', line: 'access', name: 'Шарф вовняний',
-    price: 890, oldPrice: null, badge: null,
-    code: '№ 044', material: 'ВОВНА 100%', stock: 31,
-    icon: 'fa-solid fa-mitten',
-    desc: 'Мериносова вовна без колючості, ручна обробка країв. Розмір 190 × 32 см — вистачає на подвійний оборот.',
-    sizes: ['ONE'],
-    colors: [{ name: 'Вівсяний', hex: '#DCCFB6' }, { name: 'Пляшковий', hex: '#2F4A3B' }, { name: 'Вишневий', hex: '#7A2B31' }],
-    care: 'Склад: меринос 100%. Ручне прання в холодній воді зі спеціальним засобом для вовни.',
-    shipping: 'Доставка Новою поштою — 1–3 дні. Безкоштовно при замовленні від 2 000 ₴. Обмін і повернення протягом 30 днів.',
-    fit: 'Єдиний розмір — 190 × 32 см.'
-  },
-  bag: {
-    id: 'bag', category: 'Аксесуари', line: 'access', name: 'Сумка-тоут',
-    price: 2680, oldPrice: 3200, badge: 'sale',
-    code: '№ 051', material: 'ШКІРА 100%', stock: 9,
-    icon: 'fa-solid fa-bag-shopping',
-    desc: 'Шкіряний тоут на одне відділення з внутрішньою кишенею на молнії. Тримає форму, поміщає ноутбук 14".',
-    sizes: ['ONE'],
-    colors: [{ name: 'Коньяк', hex: '#9A6438' }, { name: 'Чорний', hex: '#22221F' }],
-    care: 'Верх: шкіра 100%. Обробляти кремом для шкіри двічі на рік. Уникати тривалої вологи.',
-    shipping: 'Доставка Новою поштою — 1–3 дні. Безкоштовно при замовленні від 2 000 ₴. Обмін і повернення протягом 30 днів.',
-    fit: 'Габарити — 38 × 30 × 12 см, довжина ручок 58 см.'
-  }
-};
 
 const FREE_SHIPPING_FROM = 2000;
 const SHIPPING_FEE = 99;
 const MAX_QTY = 10;
+const PAGE_SIZE = 8;
 const CART_KEY = 'maison-cart';
 const WISH_KEY = 'maison-wishlist';
 const THEME_KEY = 'maison-theme';
 const FILTER_KEY = 'maison-filter';
+const PROMO_KEY = 'maison-promo';
+const ORDER_KEY = 'maison-last-order';
+
+const PROMOS = { MAISON10: 0.1, ARCHIVE20: 0.2 };
 
 /* ==========================================================================
    Utilities
@@ -129,6 +36,13 @@ function formatPrice(n) {
   return Math.round(n).toLocaleString('uk-UA') + ' ₴';
 }
 
+function pluralizeReviews(n) {
+  const mod10 = n % 10, mod100 = n % 100;
+  if (mod10 === 1 && mod100 !== 11) return 'відгук';
+  if (mod10 >= 2 && mod10 <= 4 && (mod100 < 10 || mod100 >= 20)) return 'відгуки';
+  return 'відгуків';
+}
+
 function pluralizeGoods(n) {
   const mod10 = n % 10, mod100 = n % 100;
   if (mod10 === 1 && mod100 !== 11) return 'товар';
@@ -143,6 +57,27 @@ function hasProduct(id) {
 }
 function getProduct(id) {
   return hasProduct(id) ? PRODUCTS[id] : null;
+}
+
+/* A flat cap would let someone order ten of a coat we have five of, so the
+   ceiling is whichever is lower: the per-order limit or what is in stock. */
+function maxQty(product) {
+  return Math.max(1, Math.min(MAX_QTY, product.stock));
+}
+
+function starsHTML(rating) {
+  const full = Math.round(rating);
+  return '<span class="stars" aria-hidden="true">' + '★'.repeat(full) + '☆'.repeat(5 - full) + '</span>';
+}
+
+/* 400w and 800w renders of the same tile; the browser picks by column width */
+function productImageHTML(product, sizes, eager) {
+  const src = 'assets/products/' + encodeURIComponent(product.id);
+  return '<img class="product-img" src="' + src + '-400.jpg" ' +
+    'srcset="' + src + '-400.jpg 400w, ' + src + '-800.jpg 800w" ' +
+    'sizes="' + sizes + '" width="600" height="800" ' +
+    'loading="' + (eager ? 'eager' : 'lazy') + '" decoding="async" ' +
+    'alt="' + escapeHTML(product.name) + ' — ' + escapeHTML(product.category.toLowerCase()) + '">';
 }
 
 function readJSON(key) {
@@ -182,8 +117,8 @@ function productCardHTML(product) {
   return '<div class="product-card" data-line="' + escapeHTML(product.line) + '" data-reveal="up">' +
     '<a class="product-link" href="product.html?id=' + encodeURIComponent(product.id) + '">' +
       '<div class="product-stage" data-tilt="9">' +
-        '<div class="product-media swatch">' +
-          '<i class="' + escapeHTML(product.icon) + '" aria-hidden="true"></i>' +
+        '<div class="product-media">' +
+          productImageHTML(product, '(min-width: 1100px) 22vw, (min-width: 760px) 30vw, 46vw') +
           '<span class="swatch-tag">' + escapeHTML(product.code) + '</span>' +
         '</div>' +
         badgeHTML(product) +
@@ -192,10 +127,16 @@ function productCardHTML(product) {
       '</div>' +
       '<p class="product-cat">' + escapeHTML(product.category) + '</p>' +
       '<p class="product-name">' + name + '</p>' +
+      '<p class="product-rating">' + starsHTML(product.rating) +
+        '<span>' + product.rating.toFixed(1).replace('.', ',') + '</span>' +
+        '<small>(' + product.reviewCount + ')</small></p>' +
       '<p class="product-price price">' + priceHTML(product) + '</p>' +
     '</a>' +
     '<button type="button" class="card-add" data-add="' + escapeHTML(product.id) + '" ' +
       'aria-label="Швидко додати «' + name + '» у кошик"><i class="fa-solid fa-plus" aria-hidden="true"></i></button>' +
+    '<button type="button" class="card-wish" data-wish="' + escapeHTML(product.id) + '" ' +
+      'aria-label="Додати «' + name + '» в обране" aria-pressed="false">' +
+      '<i class="fa-regular fa-heart" aria-hidden="true"></i></button>' +
   '</div>';
 }
 
@@ -218,7 +159,7 @@ function sanitizeLine(line) {
     id: product.id,
     size: product.sizes.includes(line.size) ? line.size : product.sizes[0],
     color: product.colors.some(c => c.name === line.color) ? line.color : product.colors[0].name,
-    qty: Math.min(Math.max(Number.isFinite(qty) ? qty : 1, 1), MAX_QTY)
+    qty: Math.min(Math.max(Number.isFinite(qty) ? qty : 1, 1), maxQty(product))
   };
 }
 
@@ -255,7 +196,7 @@ function addToCart(id, size, color, qty) {
   if (!line) return null;
   const cart = readCart();
   const match = cart.find(l => l.id === line.id && l.size === line.size && l.color === line.color);
-  if (match) match.qty = Math.min(match.qty + line.qty, MAX_QTY);
+  if (match) match.qty = Math.min(match.qty + line.qty, maxQty(PRODUCTS[line.id]));
   else cart.push(line);
   writeCart(cart);
   if (document.getElementById('cart-items')) { cartState = cart; renderCart(); }
@@ -264,7 +205,61 @@ function addToCart(id, size, color, qty) {
 
 function readWishlist() {
   const stored = readJSON(WISH_KEY);
-  return Array.isArray(stored) ? stored.filter(hasProduct) : [];
+  return Array.isArray(stored) ? stored.filter(hasProduct).slice(0, 60) : [];
+}
+
+function writeWishlist(list) {
+  writeJSON(WISH_KEY, list);
+  syncWishCount(list);
+}
+
+function syncWishCount(list) {
+  const n = (list || readWishlist()).length;
+  document.querySelectorAll('.wish-count').forEach(el => {
+    el.classList.toggle('is-gone', n === 0);
+    if (el.textContent === String(n)) return;
+    el.textContent = String(n);
+    el.classList.remove('bump');
+    void el.offsetWidth;
+    el.classList.add('bump');
+  });
+}
+
+function toggleWish(id) {
+  if (!hasProduct(id)) return false;
+  const list = readWishlist();
+  const at = list.indexOf(id);
+  if (at === -1) list.push(id); else list.splice(at, 1);
+  writeWishlist(list);
+  paintWishButtons();
+  return at === -1;
+}
+
+/* Cards are re-rendered by filters and by other pages, so the pressed state
+   is painted from the store rather than tracked per button. */
+function paintWishButtons() {
+  const list = readWishlist();
+  document.querySelectorAll('[data-wish]').forEach(btn => {
+    const on = list.includes(btn.dataset.wish);
+    btn.classList.toggle('active', on);
+    btn.setAttribute('aria-pressed', String(on));
+    const icon = btn.querySelector('i');
+    if (icon) icon.className = (on ? 'fa-solid' : 'fa-regular') + ' fa-heart';
+  });
+}
+
+function initWishButtons() {
+  document.addEventListener('click', e => {
+    const btn = e.target.closest('[data-wish]');
+    if (!btn) return;
+    e.preventDefault();
+    e.stopPropagation();
+    const product = getProduct(btn.dataset.wish);
+    if (!product) return;
+    showToast(toggleWish(product.id)
+      ? product.name + ' — в обраному'
+      : product.name + ' — прибрано з обраного');
+  });
 }
 
 /* ==========================================================================
@@ -560,19 +555,21 @@ function initCountdown() {
 /* ==========================================================================
    Shared controls
    ========================================================================== */
-function initQtyStepper(stepper) {
+function initQtyStepper(stepper, ceiling) {
   if (!stepper) return;
   const display = stepper.querySelector('span');
   const minus = stepper.querySelector('.qty-minus');
   const plus = stepper.querySelector('.qty-plus');
   if (!display || !minus || !plus) return;
-  let qty = Math.min(Math.max(Number(display.textContent) || 1, 1), MAX_QTY);
+  const top = Math.max(1, Math.min(ceiling || MAX_QTY, MAX_QTY));
+  let qty = Math.min(Math.max(Number(display.textContent) || 1, 1), top);
+  if (Number(display.textContent) !== qty) display.textContent = String(qty);
 
   const set = next => {
     qty = next;
     display.textContent = String(qty);
     minus.disabled = qty <= 1;
-    plus.disabled = qty >= MAX_QTY;
+    plus.disabled = qty >= top;
     display.classList.remove('bump');
     void display.offsetWidth;
     display.classList.add('bump');
@@ -580,9 +577,9 @@ function initQtyStepper(stepper) {
   };
 
   minus.disabled = qty <= 1;
-  plus.disabled = qty >= MAX_QTY;
+  plus.disabled = qty >= top;
   minus.addEventListener('click', () => { if (qty > 1) set(qty - 1); });
-  plus.addEventListener('click', () => { if (qty < MAX_QTY) set(qty + 1); });
+  plus.addEventListener('click', () => { if (qty < top) set(qty + 1); });
 }
 
 function initQuickAdd() {
@@ -615,17 +612,48 @@ function initProductPage() {
   document.getElementById('breadcrumb-category').textContent = product.category;
   document.getElementById('breadcrumb-name').textContent = product.name;
 
-  document.querySelectorAll('.gallery-icon').forEach(i => { i.className = 'gallery-icon ' + product.icon; });
-  document.getElementById('gallery-tag').textContent = product.code;
+  /* One rendered tile per product, shown whole and then as three crops.
+     Honest about what it is: these are framings of the same shot, not
+     four separate photographs. */
+  const VIEWS = [
+    { key: 'full', label: 'Загальний вигляд' },
+    { key: 'top', label: 'Верх виробу' },
+    { key: 'hem', label: 'Низ і оздоблення' },
+    { key: 'weave', label: 'Фактура тканини' }
+  ];
+  const gallery = document.getElementById('gallery-main');
+  const thumbRow = document.querySelector('.gallery-thumbs');
+  const src = 'assets/products/' + encodeURIComponent(product.id);
 
-  const main = document.getElementById('gallery-main');
+  if (gallery) {
+    gallery.innerHTML =
+      '<img class="gallery-img view-full" id="gallery-img" src="' + src + '-800.jpg" ' +
+        'srcset="' + src + '-400.jpg 400w, ' + src + '-800.jpg 800w" ' +
+        'sizes="(min-width: 900px) 46vw, 92vw" width="600" height="800" ' +
+        'decoding="async" alt="' + escapeHTML(product.name) + ' — загальний вигляд">' +
+      '<span class="swatch-tag" id="gallery-tag">' + escapeHTML(product.code) + '</span>' +
+      '<span class="tilt-glare" aria-hidden="true"></span>';
+  }
+  if (thumbRow) {
+    thumbRow.innerHTML = VIEWS.map((v, i) =>
+      '<button type="button" class="gallery-thumb' + (i === 0 ? ' active' : '') + '" ' +
+        'data-view="' + v.key + '" aria-pressed="' + (i === 0) + '" aria-label="' + v.label + '">' +
+        '<img src="' + src + '-400.jpg" class="view-' + v.key + '" width="600" height="800" ' +
+          'loading="lazy" decoding="async" alt=""></button>').join('');
+  }
+
+  const main = gallery;
+  const mainImg = document.getElementById('gallery-img');
   const thumbs = document.querySelectorAll('.gallery-thumbs button');
   thumbs.forEach(thumb => {
     thumb.addEventListener('click', () => {
       thumbs.forEach(t => { t.classList.remove('active'); t.setAttribute('aria-pressed', 'false'); });
       thumb.classList.add('active');
       thumb.setAttribute('aria-pressed', 'true');
-      if (!main) return;
+      if (!mainImg) return;
+      const view = VIEWS.find(v => v.key === thumb.dataset.view) || VIEWS[0];
+      mainImg.className = 'gallery-img view-' + view.key;
+      mainImg.alt = product.name + ' — ' + view.label.toLowerCase();
       main.classList.remove('swap');
       void main.offsetWidth;
       main.classList.add('swap');
@@ -644,8 +672,11 @@ function initProductPage() {
 
   document.getElementById('product-badge-row').innerHTML = badgeHTML(product);
   document.getElementById('product-name').textContent = product.name;
-  document.getElementById('stock-note').textContent =
-    'У наявності: ' + product.stock + ' шт. · ' + product.material;
+  const stockNote = document.getElementById('stock-note');
+  stockNote.textContent = product.stock <= 6
+    ? 'Залишилось ' + product.stock + ' шт. · ' + product.material
+    : 'У наявності: ' + product.stock + ' шт. · ' + product.material;
+  stockNote.closest('.stock-note').classList.toggle('is-low', product.stock <= 6);
 
   document.getElementById('price-now').textContent = formatPrice(product.price);
   const priceOld = document.getElementById('price-old');
@@ -709,7 +740,7 @@ function initProductPage() {
     });
   });
 
-  initQtyStepper(document.querySelector('.product-info .qty-stepper'));
+  initQtyStepper(document.querySelector('.product-info .qty-stepper'), maxQty(product));
 
   const chosenQty = () => {
     const el = document.querySelector('.product-info .qty-stepper span');
@@ -815,10 +846,57 @@ function initProductPage() {
     });
   }
 
+  const reviewRoot = document.getElementById('reviews');
+  if (reviewRoot && product.reviews.length) {
+    document.getElementById('review-score').textContent = product.rating.toFixed(1).replace('.', ',');
+    document.getElementById('review-stars').innerHTML = starsHTML(product.rating);
+    document.getElementById('review-count').textContent =
+      product.reviewCount + ' ' + pluralizeReviews(product.reviewCount);
+
+    /* bar chart of the star split, derived from the sample so it always
+       matches the reviews actually printed underneath */
+    const split = [5, 4, 3, 2, 1].map(star => {
+      const n = product.reviews.filter(r => r.stars === star).length;
+      return { star, pct: Math.round((n / product.reviews.length) * 100) };
+    });
+    /* built through the DOM: a style attribute in an innerHTML string is
+       markup, and the page's CSP does not allow inline styles */
+    const bars = document.getElementById('review-bars');
+    bars.textContent = '';
+    split.forEach(row => {
+      const wrap = document.createElement('div');
+      wrap.className = 'review-bar';
+      const star = document.createElement('span');
+      star.textContent = row.star + '★';
+      const track = document.createElement('div');
+      track.className = 'review-bar-track';
+      const fill = document.createElement('div');
+      fill.style.width = row.pct + '%';
+      track.appendChild(fill);
+      const pct = document.createElement('small');
+      pct.textContent = row.pct + '%';
+      wrap.append(star, track, pct);
+      bars.appendChild(wrap);
+    });
+
+    document.getElementById('review-list').innerHTML = product.reviews.map(r =>
+      '<figure class="review" data-reveal="up">' +
+        starsHTML(r.stars) +
+        '<blockquote>' + escapeHTML(r.text) + '</blockquote>' +
+        '<figcaption><span class="quote-avatar">' + escapeHTML(r.author.slice(0, 1)) + '</span>' +
+        '<div><p>' + escapeHTML(r.author) + '</p><small>' + escapeHTML(r.city) + '</small></div>' +
+        '</figcaption></figure>').join('');
+    armReveal(reviewRoot);
+  } else if (reviewRoot) {
+    reviewRoot.classList.add('is-gone');
+  }
+
   const relatedGrid = document.getElementById('related-grid');
   if (relatedGrid) {
-    const others = Object.keys(PRODUCTS).filter(id => id !== product.id).slice(0, 4);
-    relatedGrid.innerHTML = others.map(id => productCardHTML(PRODUCTS[id])).join('');
+    const pool = Object.values(PRODUCTS).filter(p => p.id !== product.id);
+    const sameLine = pool.filter(p => p.category === product.category);
+    const others = [...sameLine, ...pool.filter(p => !sameLine.includes(p))].slice(0, 4);
+    relatedGrid.innerHTML = others.map(productCardHTML).join('');
     armReveal(relatedGrid);
     armTilt(relatedGrid);
   }
@@ -829,6 +907,21 @@ function initProductPage() {
    ========================================================================== */
 let cartState = [];
 let cartDiscount = 0;
+
+/* The cart survives a reload, so the discount applied to it has to as well —
+   otherwise the total silently changes when the page comes back. */
+function readPromo() {
+  const code = readJSON(PROMO_KEY);
+  return typeof code === 'string' && Object.prototype.hasOwnProperty.call(PROMOS, code) ? code : '';
+}
+function applyPromo(code) {
+  const clean = String(code || '').trim().toUpperCase();
+  const known = Object.prototype.hasOwnProperty.call(PROMOS, clean);
+  cartDiscount = known ? PROMOS[clean] : 0;
+  if (known) writeJSON(PROMO_KEY, clean);
+  else { try { localStorage.removeItem(PROMO_KEY); } catch (e) {} }
+  return known ? clean : '';
+}
 
 function cartLineHTML(line, index) {
   const product = PRODUCTS[line.id];
@@ -869,7 +962,7 @@ function renderCart() {
   list.querySelectorAll('.cart-line').forEach(el => {
     const index = Number(el.dataset.index);
     const stepper = el.querySelector('.qty-stepper');
-    initQtyStepper(stepper);
+    initQtyStepper(stepper, maxQty(PRODUCTS[cartState[index].id]));
     stepper.addEventListener('qtychange', () => {
       const qty = Number(stepper.querySelector('span').textContent);
       cartState[index].qty = qty;
@@ -961,27 +1054,28 @@ function initCartPage() {
   if (!list) return;
 
   cartState = readCart();
+  cartDiscount = readPromo() ? PROMOS[readPromo()] : 0;
   renderCart();
 
   const promoBtn = document.getElementById('promo-apply');
   const promoInput = document.getElementById('promo-input');
   if (promoBtn && promoInput) {
     const msg = document.getElementById('promo-msg');
+    const say = (text, kind) => { msg.textContent = text; msg.className = 'promo-msg ' + kind; };
+
+    const saved = readPromo();
+    if (saved) {
+      applyPromo(saved);
+      promoInput.value = saved;
+      say('Промокод «' + saved + '» застосовано: -' + Math.round(PROMOS[saved] * 100) + '%', 'success');
+    }
+
     const apply = () => {
-      const code = promoInput.value.trim().toUpperCase();
-      if (code === 'MAISON10') {
-        cartDiscount = 0.1;
-        msg.textContent = 'Промокод застосовано: -10%';
-        msg.className = 'promo-msg success';
-      } else if (code === '') {
-        cartDiscount = 0;
-        msg.textContent = 'Введіть промокод';
-        msg.className = 'promo-msg error';
-      } else {
-        cartDiscount = 0;
-        msg.textContent = 'Промокод недійсний';
-        msg.className = 'promo-msg error';
-      }
+      const raw = promoInput.value.trim();
+      if (!raw) { applyPromo(''); say('Введіть промокод', 'error'); recalcSummary(); return; }
+      const code = applyPromo(raw);
+      if (code) say('Промокод «' + code + '» застосовано: -' + Math.round(PROMOS[code] * 100) + '%', 'success');
+      else say('Промокод недійсний', 'error');
       recalcSummary();
     };
     promoBtn.addEventListener('click', apply);
@@ -1414,12 +1508,18 @@ document.addEventListener('DOMContentLoaded', () => {
   initInfoLinks();
   initNewsletterForms();
   initQuickAdd();
+  initWishButtons();
   syncCartCount();
+  syncWishCount();
 
   initReveal();
   renderBestsellers();
   initProductPage();
   initCartPage();
+  initCatalogPage();
+  initWishlistPage();
+  initCheckoutPage();
+  paintWishButtons();
 
   armTilt(document);
   initCounters();
@@ -1431,6 +1531,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 /* another tab may have changed the cart; keep this one honest */
 window.addEventListener('storage', e => {
+  if (e.key === WISH_KEY) { syncWishCount(); paintWishButtons(); return; }
   if (e.key !== CART_KEY) return;
   syncCartCount();
   if (document.getElementById('cart-items')) { cartState = readCart(); renderCart(); }
@@ -1441,4 +1542,395 @@ window.addEventListener('pageshow', () => {
   const veil = document.getElementById('page-veil');
   if (veil) veil.classList.remove('show');
   syncCartCount();
+  syncWishCount();
 });
+
+/* ==========================================================================
+   Catalogue page — filters, sort and paging, all mirrored in the URL
+   ========================================================================== */
+const SORTS = {
+  featured: { label: 'Рекомендовані', cmp: null },
+  'price-asc': { label: 'Спершу дешевші', cmp: (a, b) => a.price - b.price },
+  'price-desc': { label: 'Спершу дорожчі', cmp: (a, b) => b.price - a.price },
+  rating: { label: 'За рейтингом', cmp: (a, b) => b.rating - a.rating || b.reviewCount - a.reviewCount },
+  name: { label: 'За назвою', cmp: (a, b) => a.name.localeCompare(b.name, 'uk') }
+};
+
+function readCatalogState() {
+  const q = new URLSearchParams(window.location.search);
+  const cats = (q.get('cat') || '').split(',').filter(c => CATEGORIES.includes(c));
+  const sizes = (q.get('size') || '').split(',').filter(sz => ALL_SIZES.includes(sz));
+  const line = LINES.some(l => l.id === q.get('line')) ? q.get('line') : 'all';
+  const sort = Object.prototype.hasOwnProperty.call(SORTS, q.get('sort')) ? q.get('sort') : 'featured';
+  const max = Number(q.get('max'));
+  const page = Math.max(1, Math.trunc(Number(q.get('page'))) || 1);
+  return { cats, sizes, line, sort, max: Number.isFinite(max) && max > 0 ? max : 0, page };
+}
+
+function writeCatalogState(state, replace) {
+  const q = new URLSearchParams();
+  if (state.cats.length) q.set('cat', state.cats.join(','));
+  if (state.sizes.length) q.set('size', state.sizes.join(','));
+  if (state.line !== 'all') q.set('line', state.line);
+  if (state.sort !== 'featured') q.set('sort', state.sort);
+  if (state.max) q.set('max', String(state.max));
+  if (state.page > 1) q.set('page', String(state.page));
+  const url = window.location.pathname + (q.toString() ? '?' + q : '');
+  /* replaceState while typing a filter, pushState on a real navigation, so
+     Back steps through pages rather than through every checkbox click */
+  history[replace ? 'replaceState' : 'pushState']({}, '', url);
+}
+
+function filterCatalog(state) {
+  let list = Object.values(PRODUCTS);
+  if (state.line !== 'all') list = list.filter(p => p.line === state.line);
+  if (state.cats.length) list = list.filter(p => state.cats.includes(p.category));
+  if (state.sizes.length) list = list.filter(p => p.sizes.some(sz => state.sizes.includes(sz)));
+  if (state.max) list = list.filter(p => p.price <= state.max);
+  const cmp = SORTS[state.sort].cmp;
+  return cmp ? list.slice().sort(cmp) : list;
+}
+
+function initCatalogPage() {
+  const grid = document.getElementById('catalog-grid');
+  if (!grid) return;
+
+  const priceCeiling = Math.max(...Object.values(PRODUCTS).map(p => p.price));
+  let state = readCatalogState();
+
+  const els = {
+    line: document.getElementById('catalog-lines'),
+    cats: document.getElementById('catalog-cats'),
+    sizes: document.getElementById('catalog-sizes'),
+    price: document.getElementById('catalog-price'),
+    priceOut: document.getElementById('catalog-price-value'),
+    sort: document.getElementById('catalog-sort'),
+    count: document.getElementById('catalog-count'),
+    empty: document.getElementById('catalog-empty'),
+    clear: document.getElementById('catalog-clear'),
+    pager: document.getElementById('catalog-pager'),
+    chips: document.getElementById('catalog-chips')
+  };
+
+  els.line.innerHTML = LINES.map(l =>
+    '<button type="button" data-line="' + l.id + '">' + escapeHTML(l.label) + '</button>').join('');
+  els.cats.innerHTML = CATEGORIES.map(c =>
+    '<label class="check"><input type="checkbox" value="' + escapeHTML(c) + '">' +
+    '<span>' + escapeHTML(c) + '</span>' +
+    '<small>' + Object.values(PRODUCTS).filter(p => p.category === c).length + '</small></label>').join('');
+  els.sizes.innerHTML = ALL_SIZES.map(sz =>
+    '<label class="size-check"><input type="checkbox" value="' + escapeHTML(sz) + '">' +
+    '<span>' + escapeHTML(sz) + '</span></label>').join('');
+  els.sort.innerHTML = Object.keys(SORTS).map(k =>
+    '<option value="' + k + '">' + escapeHTML(SORTS[k].label) + '</option>').join('');
+  els.price.max = String(priceCeiling);
+  els.price.min = '500';
+  els.price.step = '50';
+
+  function paintControls() {
+    els.line.querySelectorAll('button').forEach(b => {
+      const on = b.dataset.line === state.line;
+      b.classList.toggle('active', on);
+      b.setAttribute('aria-pressed', String(on));
+    });
+    els.cats.querySelectorAll('input').forEach(i => { i.checked = state.cats.includes(i.value); });
+    els.sizes.querySelectorAll('input').forEach(i => { i.checked = state.sizes.includes(i.value); });
+    els.sort.value = state.sort;
+    els.price.value = String(state.max || priceCeiling);
+    els.priceOut.textContent = state.max ? 'до ' + formatPrice(state.max) : 'будь-яка';
+
+    const chips = [];
+    if (state.line !== 'all') chips.push({ k: 'line', label: LINES.find(l => l.id === state.line).label });
+    state.cats.forEach(c => chips.push({ k: 'cat', v: c, label: c }));
+    state.sizes.forEach(sz => chips.push({ k: 'size', v: sz, label: 'Розмір ' + sz }));
+    if (state.max) chips.push({ k: 'max', label: 'до ' + formatPrice(state.max) });
+    els.chips.innerHTML = chips.map(c =>
+      '<button type="button" class="chip-clear" data-k="' + c.k + '" data-v="' + escapeHTML(c.v || '') + '">' +
+      escapeHTML(c.label) + '<i class="fa-solid fa-xmark" aria-hidden="true"></i></button>').join('');
+    els.chips.classList.toggle('is-gone', !chips.length);
+    els.clear.classList.toggle('is-gone', !chips.length);
+  }
+
+  function render(replaceUrl) {
+    const list = filterCatalog(state);
+    const pages = Math.max(1, Math.ceil(list.length / PAGE_SIZE));
+    if (state.page > pages) state.page = pages;
+    const slice = list.slice((state.page - 1) * PAGE_SIZE, state.page * PAGE_SIZE);
+
+    els.count.textContent = list.length + ' ' + pluralizeGoods(list.length);
+    els.empty.classList.toggle('is-gone', list.length > 0);
+    grid.classList.toggle('is-gone', list.length === 0);
+    grid.innerHTML = slice.map(productCardHTML).join('');
+    armReveal(grid);
+    armTilt(grid);
+    paintWishButtons();
+
+    els.pager.innerHTML = pages > 1
+      ? '<button type="button" class="pager-btn" data-page="' + (state.page - 1) + '"' +
+          (state.page === 1 ? ' disabled' : '') + ' aria-label="Попередня сторінка">' +
+          '<i class="fa-solid fa-arrow-left" aria-hidden="true"></i></button>' +
+        Array.from({ length: pages }, (_, i) =>
+          '<button type="button" class="pager-btn' + (i + 1 === state.page ? ' active' : '') +
+          '" data-page="' + (i + 1) + '"' + (i + 1 === state.page ? ' aria-current="page"' : '') +
+          '>' + (i + 1) + '</button>').join('') +
+        '<button type="button" class="pager-btn" data-page="' + (state.page + 1) + '"' +
+          (state.page === pages ? ' disabled' : '') + ' aria-label="Наступна сторінка">' +
+          '<i class="fa-solid fa-arrow-right" aria-hidden="true"></i></button>'
+      : '';
+
+    paintControls();
+    writeCatalogState(state, replaceUrl !== false);
+  }
+
+  const change = () => { state.page = 1; render(true); };
+
+  els.line.addEventListener('click', e => {
+    const b = e.target.closest('button');
+    if (!b) return;
+    state.line = b.dataset.line;
+    change();
+  });
+  els.cats.addEventListener('change', () => {
+    state.cats = [...els.cats.querySelectorAll('input:checked')].map(i => i.value);
+    change();
+  });
+  els.sizes.addEventListener('change', () => {
+    state.sizes = [...els.sizes.querySelectorAll('input:checked')].map(i => i.value);
+    change();
+  });
+  els.price.addEventListener('input', () => {
+    const v = Number(els.price.value);
+    state.max = v >= priceCeiling ? 0 : v;
+    els.priceOut.textContent = state.max ? 'до ' + formatPrice(state.max) : 'будь-яка';
+  });
+  els.price.addEventListener('change', change);
+  els.sort.addEventListener('change', () => { state.sort = els.sort.value; change(); });
+  els.clear.addEventListener('click', () => {
+    state = { cats: [], sizes: [], line: 'all', sort: 'featured', max: 0, page: 1 };
+    render(false);
+  });
+  els.chips.addEventListener('click', e => {
+    const chip = e.target.closest('.chip-clear');
+    if (!chip) return;
+    if (chip.dataset.k === 'line') state.line = 'all';
+    if (chip.dataset.k === 'max') state.max = 0;
+    if (chip.dataset.k === 'cat') state.cats = state.cats.filter(c => c !== chip.dataset.v);
+    if (chip.dataset.k === 'size') state.sizes = state.sizes.filter(sz => sz !== chip.dataset.v);
+    change();
+  });
+  els.pager.addEventListener('click', e => {
+    const b = e.target.closest('.pager-btn');
+    if (!b || b.disabled) return;
+    state.page = Number(b.dataset.page);
+    render(false);
+    document.getElementById('catalog-top').scrollIntoView({
+      behavior: reducedMotion() ? 'auto' : 'smooth', block: 'start'
+    });
+  });
+
+  window.addEventListener('popstate', () => { state = readCatalogState(); render(true); });
+
+  const toggle = document.getElementById('filter-toggle');
+  const panel = document.getElementById('catalog-filters');
+  if (toggle && panel) {
+    toggle.addEventListener('click', () => {
+      const open = panel.classList.toggle('open');
+      toggle.setAttribute('aria-expanded', String(open));
+    });
+  }
+
+  render(true);
+}
+
+/* ==========================================================================
+   Wishlist page
+   ========================================================================== */
+function initWishlistPage() {
+  const grid = document.getElementById('wishlist-grid');
+  if (!grid) return;
+
+  const empty = document.getElementById('wishlist-empty');
+  const count = document.getElementById('wishlist-count');
+  const clear = document.getElementById('wishlist-clear');
+
+  function render() {
+    const list = readWishlist();
+    count.textContent = list.length + ' ' + pluralizeGoods(list.length);
+    empty.classList.toggle('is-gone', list.length > 0);
+    grid.classList.toggle('is-gone', list.length === 0);
+    clear.classList.toggle('is-gone', list.length === 0);
+    grid.innerHTML = list.map(id => productCardHTML(PRODUCTS[id])).join('');
+    armReveal(grid);
+    armTilt(grid);
+    paintWishButtons();
+  }
+
+  clear.addEventListener('click', () => {
+    writeWishlist([]);
+    render();
+    showToast('Обране очищено');
+  });
+
+  /* a heart click anywhere on this page removes the card it belongs to */
+  document.addEventListener('click', e => {
+    if (e.target.closest('[data-wish]')) setTimeout(render, 0);
+  });
+
+  render();
+}
+
+/* ==========================================================================
+   Checkout page
+   ========================================================================== */
+const DELIVERY = {
+  branch: { label: 'Відділення Нової пошти', fee: 0 },
+  courier: { label: 'Кур\'єр за адресою', fee: 60 },
+  pickup: { label: 'Самовивіз з ательє, Київ', fee: 0, free: true }
+};
+
+function orderNumber() {
+  const d = new Date();
+  const stamp = String(d.getFullYear()).slice(2) +
+    String(d.getMonth() + 1).padStart(2, '0') + String(d.getDate()).padStart(2, '0');
+  /* demo order id — readable, not a security token */
+  return 'MA-' + stamp + '-' + String(Math.floor(Math.random() * 9000) + 1000);
+}
+
+function initCheckoutPage() {
+  const form = document.getElementById('checkout-form');
+  if (!form) return;
+
+  const lines = readCart();
+  const promo = readPromo();
+  const discount = promo ? PROMOS[promo] : 0;
+
+  const summaryList = document.getElementById('co-lines');
+  const emptyState = document.getElementById('co-empty');
+  const body = document.getElementById('co-body');
+
+  if (!lines.length) {
+    emptyState.classList.remove('is-gone');
+    body.classList.add('is-gone');
+    return;
+  }
+  emptyState.classList.add('is-gone');
+  body.classList.remove('is-gone');
+
+  summaryList.innerHTML = lines.map(line => {
+    const p = PRODUCTS[line.id];
+    return '<li class="co-line">' +
+      '<img src="assets/products/' + encodeURIComponent(p.id) + '-400.jpg" width="600" height="800" ' +
+        'loading="lazy" decoding="async" alt="">' +
+      '<div><p class="co-line-name">' + escapeHTML(p.name) + '</p>' +
+      '<p class="co-line-meta">' + escapeHTML(line.size) + ' · ' + escapeHTML(line.color) +
+      ' · ' + line.qty + ' шт.</p></div>' +
+      '<span class="price">' + formatPrice(p.price * line.qty) + '</span></li>';
+  }).join('');
+
+  const subtotal = lines.reduce((sum, l) => sum + PRODUCTS[l.id].price * l.qty, 0);
+  const discounted = subtotal * (1 - discount);
+
+  function paintTotals() {
+    const method = form.querySelector('input[name="delivery"]:checked');
+    const key = method && Object.prototype.hasOwnProperty.call(DELIVERY, method.value)
+      ? method.value : 'branch';
+    const option = DELIVERY[key];
+    const shipping = option.free || discounted >= FREE_SHIPPING_FROM ? option.fee : option.fee + SHIPPING_FEE;
+
+    document.getElementById('co-subtotal').textContent = formatPrice(subtotal);
+    const row = document.getElementById('co-discount-row');
+    row.hidden = discount === 0;
+    if (discount > 0) {
+      document.getElementById('co-discount-label').textContent = 'Знижка «' + promo + '»';
+      document.getElementById('co-discount').textContent = '-' + formatPrice(subtotal * discount);
+    }
+    document.getElementById('co-shipping').textContent =
+      shipping === 0 ? 'Безкоштовно' : formatPrice(shipping);
+    document.getElementById('co-total').textContent = formatPrice(discounted + shipping);
+
+    /* the branch picker is meaningless for courier or pickup */
+    form.querySelector('[data-only="branch"]').hidden = key !== 'branch';
+    form.querySelector('[data-only="courier"]').hidden = key !== 'courier';
+    return { key: key, label: option.label, shipping: shipping, total: discounted + shipping };
+  }
+
+  form.querySelectorAll('input[name="delivery"]').forEach(r =>
+    r.addEventListener('change', paintTotals));
+  paintTotals();
+
+  const setError = (field, message) => {
+    const wrap = field.closest('.field');
+    field.classList.toggle('field-error', Boolean(message));
+    field.setAttribute('aria-invalid', String(Boolean(message)));
+    const note = wrap && wrap.querySelector('.field-msg');
+    if (note) note.textContent = message || '';
+  };
+
+  const RULES = {
+    'co-name': v => v.trim().length >= 2 || 'Вкажіть ім\'я та прізвище',
+    'co-phone': v => /^\+?\d[\d\s()-]{8,17}$/.test(v.trim()) || 'Телефон у форматі +380 XX XXX XX XX',
+    'co-email': v => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim()) || 'Перевірте формат email',
+    'co-city': v => v.trim().length >= 2 || 'Вкажіть місто',
+    'co-branch': v => v.trim().length >= 1 || 'Вкажіть номер відділення',
+    'co-address': v => v.trim().length >= 5 || 'Вкажіть вулицю і номер будинку'
+  };
+
+  function validate(showAll) {
+    let firstBad = null;
+    Object.keys(RULES).forEach(id => {
+      const field = document.getElementById(id);
+      if (!field) return;
+      const group = field.closest('[data-only]');
+      if (group && group.hidden) { setError(field, ''); return; }
+      const result = RULES[id](field.value);
+      const message = result === true ? '' : result;
+      if (showAll || field.dataset.touched) setError(field, message);
+      if (message && !firstBad) firstBad = field;
+    });
+
+    const agree = document.getElementById('co-agree');
+    const agreeBad = !agree.checked;
+    agree.closest('.field').querySelector('.field-msg').textContent =
+      showAll && agreeBad ? 'Підтвердьте умови, щоб продовжити' : '';
+    if (agreeBad && !firstBad) firstBad = agree;
+
+    return { ok: !firstBad, firstBad: firstBad };
+  }
+
+  form.querySelectorAll('input, textarea').forEach(field => {
+    field.addEventListener('blur', () => { field.dataset.touched = '1'; validate(false); });
+    field.addEventListener('input', () => { if (field.dataset.touched) validate(false); });
+  });
+
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    const check = validate(true);
+    if (!check.ok) {
+      check.firstBad.focus();
+      showToast('Перевірте виділені поля');
+      return;
+    }
+
+    const totals = paintTotals();
+    const order = {
+      number: orderNumber(),
+      total: totals.total,
+      delivery: totals.label,
+      email: document.getElementById('co-email').value.trim(),
+      units: cartUnits(lines),
+      at: new Date().toISOString()
+    };
+    writeJSON(ORDER_KEY, order);
+    writeCart([]);
+    try { localStorage.removeItem(PROMO_KEY); } catch (err) {}
+
+    document.getElementById('co-number').textContent = order.number;
+    document.getElementById('co-sent-to').textContent = order.email;
+    document.getElementById('co-paid').textContent = formatPrice(order.total);
+    document.getElementById('co-method').textContent = order.delivery;
+    body.classList.add('is-gone');
+    document.getElementById('co-done').classList.remove('is-gone');
+    document.getElementById('co-done').focus();
+    window.scrollTo({ top: 0, behavior: reducedMotion() ? 'auto' : 'smooth' });
+  });
+}

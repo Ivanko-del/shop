@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Оформлення замовлення — Maison</title>
+<meta name="description" content="Контакти, доставка й оплата. Демонстраційна форма без реальної оплати.">
+<meta name="robots" content="noindex">
+<link rel="canonical" href="https://shop-xi-one-17.vercel.app/checkout.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Maison">
+<meta property="og:locale" content="uk_UA">
+<meta property="og:title" content="Оформлення замовлення — Maison">
+<meta property="og:description" content="Контакти, доставка й оплата. Демонстраційна форма без реальної оплати.">
+<meta property="og:url" content="https://shop-xi-one-17.vercel.app/checkout.html">
+<meta property="og:image" content="https://shop-xi-one-17.vercel.app/assets/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Maison — ательє сучасного одягу">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Оформлення замовлення — Maison">
+<meta name="twitter:description" content="Контакти, доставка й оплата. Демонстраційна форма без реальної оплати.">
+<meta name="twitter:image" content="https://shop-xi-one-17.vercel.app/assets/og.jpg">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%277%27 fill=%27%23191814%27/%3E%3Ctext x=%2716%27 y=%2723%27 font-family=%27Georgia,serif%27 font-size=%2720%27 font-weight=%27600%27 fill=%27%23F6F4EF%27 text-anchor=%27middle%27%3EM%3C/text%3E%3Ccircle cx=%2725%27 cy=%278%27 r=%272.6%27 fill=%27%232F6B4F%27/%3E%3C/svg%3E">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data:; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="theme-color" content="#F6F4EF">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link referrerpolicy="no-referrer" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,600;1,600&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" referrerpolicy="no-referrer" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="styles.css">
+<script src="theme-init.js"></script>
+</head>
+<body>
+
+<a class="skip-link" href="#main">Перейти до вмісту</a>
+<div class="scroll-progress" id="scroll-progress"></div>
+
+<div class="announcement">
+  <div class="announcement-track">
+    <span>Безкоштовна доставка від 2 000 ₴</span>
+    <span>Повернення протягом 30 днів</span>
+    <span>Промокод MAISON10 — знижка 10%</span>
+    <span>Безкоштовна доставка від 2 000 ₴</span>
+    <span>Повернення протягом 30 днів</span>
+    <span>Промокод MAISON10 — знижка 10%</span>
+  </div>
+</div>
+
+<header class="site-header" id="site-header">
+  <div class="container nav">
+    <a href="index.html" class="logo">Maison</a>
+    <nav class="nav-links" aria-label="Основне меню">
+      <a href="catalog.html">Каталог</a>
+      <a href="catalog.html?line=women">Жінкам</a>
+      <a href="catalog.html?line=men">Чоловікам</a>
+      <a href="catalog.html?line=access">Аксесуари</a>
+      <a href="index.html#atelier">Ательє</a>
+    </nav>
+    <div class="nav-actions">
+      <button type="button" class="search-trigger" aria-label="Пошук"><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i></button>
+      <button type="button" class="theme-toggle" aria-label="Змінити тему"><i class="fa-solid fa-moon" aria-hidden="true"></i></button>
+      <a href="wishlist.html" aria-label="Обране">
+        <i class="fa-regular fa-heart" aria-hidden="true"></i>
+        <span class="wish-count is-gone">0</span>
+      </a>
+      <button type="button" data-modal="account" aria-label="Акаунт"><i class="fa-solid fa-user" aria-hidden="true"></i></button>
+      <a href="cart.html" aria-label="Кошик">
+        <i class="fa-solid fa-bag-shopping" aria-hidden="true"></i>
+        <span class="cart-count">0</span>
+      </a>
+      <button type="button" class="menu-toggle" aria-label="Відкрити меню" aria-expanded="false" aria-controls="mobile-menu"><i class="fa-solid fa-bars" aria-hidden="true"></i></button>
+    </div>
+  </div>
+</header>
+
+<div class="mobile-menu" id="mobile-menu">
+  <div class="mobile-menu-header">
+    <span class="logo">Maison</span>
+    <button type="button" class="mobile-menu-close" aria-label="Закрити меню"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
+  </div>
+  <nav aria-label="Мобільне меню">
+    <a href="catalog.html">Каталог</a>
+    <a href="catalog.html?line=women">Жінкам</a>
+    <a href="catalog.html?line=men">Чоловікам</a>
+    <a href="catalog.html?line=access">Аксесуари</a>
+    <a href="index.html#atelier">Ательє</a>
+    <a href="wishlist.html">Обране</a>
+    <a href="cart.html">Кошик</a>
+  </nav>
+  <p class="mobile-menu-foot">Архів № 07 · Осінь 2026</p>
+</div>
+
+<main id="main" tabindex="-1">
+  <div class="container">
+    <p class="breadcrumb"><a href="index.html">Головна</a><span aria-hidden="true">/</span><a href="cart.html">Кошик</a><span aria-hidden="true">/</span><span>Оформлення</span></p>
+
+    <div class="page-head" data-reveal="up">
+      <p class="eyebrow">Крок 2 з 3</p>
+      <h1>Оформлення замовлення</h1>
+    </div>
+
+    <div class="catalog-empty is-gone" id="co-empty">
+      <i class="fa-solid fa-bag-shopping" aria-hidden="true"></i>
+      <p>Кошик порожній</p>
+      <p class="catalog-empty-hint">Додайте щось у кошик, і ми повернемось до оформлення.</p>
+      <a href="catalog.html" class="btn btn-primary">До каталогу <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+    </div>
+
+    <div class="co-done is-gone" id="co-done" tabindex="-1">
+      <div class="co-done-mark" aria-hidden="true"><i class="fa-solid fa-check"></i></div>
+      <p class="eyebrow">Крок 3 з 3</p>
+      <h2>Замовлення прийнято</h2>
+      <p class="co-done-lead">Номер замовлення <strong id="co-number"></strong>. Підтвердження надіслали на <strong id="co-sent-to"></strong>.</p>
+      <dl class="co-done-facts">
+        <div><dt>До сплати</dt><dd id="co-paid"></dd></div>
+        <div><dt>Доставка</dt><dd id="co-method"></dd></div>
+      </dl>
+      <p class="co-demo">Це демонстраційний проєкт: реальної оплати й відправлення не відбувається.</p>
+      <a href="catalog.html" class="btn btn-primary">Продовжити покупки <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+    </div>
+
+    <div class="co-layout is-gone" id="co-body">
+      <form class="co-form" id="checkout-form" novalidate>
+        <section class="co-section">
+          <h2><span class="co-step">1</span> Контакти</h2>
+          <div class="field">
+            <label for="co-name">Ім'я та прізвище</label>
+            <input type="text" id="co-name" name="name" autocomplete="name" required>
+            <p class="field-msg" role="alert"></p>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label for="co-phone">Телефон</label>
+              <input type="tel" id="co-phone" name="phone" autocomplete="tel" placeholder="+380 67 123 45 67" required>
+              <p class="field-msg" role="alert"></p>
+            </div>
+            <div class="field">
+              <label for="co-email">Email</label>
+              <input type="email" id="co-email" name="email" autocomplete="email" required>
+              <p class="field-msg" role="alert"></p>
+            </div>
+          </div>
+        </section>
+
+        <section class="co-section">
+          <h2><span class="co-step">2</span> Доставка</h2>
+          <div class="radio-cards">
+            <label class="radio-card">
+              <input type="radio" name="delivery" value="branch" checked>
+              <span class="radio-card-body">
+                <span class="radio-card-title">Відділення Нової пошти</span>
+                <span class="radio-card-note">1–3 дні · безкоштовно від 2 000 ₴</span>
+              </span>
+            </label>
+            <label class="radio-card">
+              <input type="radio" name="delivery" value="courier">
+              <span class="radio-card-body">
+                <span class="radio-card-title">Кур'єр за адресою</span>
+                <span class="radio-card-note">1–3 дні · +60 ₴ до тарифу</span>
+              </span>
+            </label>
+            <label class="radio-card">
+              <input type="radio" name="delivery" value="pickup">
+              <span class="radio-card-body">
+                <span class="radio-card-title">Самовивіз з ательє</span>
+                <span class="radio-card-note">Київ, вул. Хрещатик 1 · безкоштовно</span>
+              </span>
+            </label>
+          </div>
+
+          <div class="field">
+            <label for="co-city">Місто</label>
+            <input type="text" id="co-city" name="city" autocomplete="address-level2" required>
+            <p class="field-msg" role="alert"></p>
+          </div>
+          <div class="field" data-only="branch">
+            <label for="co-branch">Номер відділення</label>
+            <input type="text" id="co-branch" name="branch" inputmode="numeric" placeholder="напр. 12">
+            <p class="field-msg" role="alert"></p>
+          </div>
+          <div class="field" data-only="courier" hidden>
+            <label for="co-address">Адреса</label>
+            <input type="text" id="co-address" name="address" autocomplete="street-address" placeholder="вулиця, будинок, квартира">
+            <p class="field-msg" role="alert"></p>
+          </div>
+        </section>
+
+        <section class="co-section">
+          <h2><span class="co-step">3</span> Оплата</h2>
+          <div class="radio-cards">
+            <label class="radio-card">
+              <input type="radio" name="payment" value="card" checked>
+              <span class="radio-card-body">
+                <span class="radio-card-title">Картка онлайн</span>
+                <span class="radio-card-note">Visa, Mastercard, Apple Pay</span>
+              </span>
+            </label>
+            <label class="radio-card">
+              <input type="radio" name="payment" value="cod">
+              <span class="radio-card-body">
+                <span class="radio-card-title">При отриманні</span>
+                <span class="radio-card-note">Готівкою або карткою у відділенні</span>
+              </span>
+            </label>
+          </div>
+          <div class="field">
+            <label for="co-note">Коментар до замовлення <span class="field-optional">необов'язково</span></label>
+            <textarea id="co-note" name="note" rows="3" placeholder="Наприклад: зателефонуйте перед доставкою"></textarea>
+          </div>
+          <div class="field field-check">
+            <label class="check">
+              <input type="checkbox" id="co-agree" required>
+              <span>Погоджуюсь з умовами обміну та повернення</span>
+            </label>
+            <p class="field-msg" role="alert"></p>
+          </div>
+        </section>
+
+        <button type="submit" class="btn btn-primary btn-block btn-lg">
+          Підтвердити замовлення <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+        </button>
+        <p class="co-demo">Демонстраційна форма — дані нікуди не надсилаються.</p>
+      </form>
+
+      <aside class="co-summary" aria-label="Ваше замовлення">
+        <h2>Ваше замовлення</h2>
+        <ul class="co-lines" id="co-lines"></ul>
+        <div class="summary-row"><span>Підсумок</span><span id="co-subtotal"></span></div>
+        <div class="summary-row" id="co-discount-row" hidden><span id="co-discount-label">Знижка</span><span id="co-discount"></span></div>
+        <div class="summary-row"><span>Доставка</span><span id="co-shipping"></span></div>
+        <div class="summary-row total"><span>До сплати</span><span id="co-total"></span></div>
+        <p class="summary-note"><a href="cart.html">Повернутись до кошика</a></p>
+      </aside>
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-col footer-brand" data-reveal="up">
+        <span class="logo">Maison</span>
+        <p>Ательє готового одягу. Натуральні тканини, точний крій, речі, які тримають форму сезон за сезоном.</p>
+      </div>
+      <div class="footer-col rd-1" data-reveal="up">
+        <h4>Магазин</h4>
+        <a href="catalog.html">Каталог</a>
+        <a href="catalog.html?sort=price-asc">Вигідні ціни</a>
+        <a href="wishlist.html">Обране</a>
+      </div>
+      <div class="footer-col rd-2" data-reveal="up">
+        <h4>Клієнтам</h4>
+        <a href="#" data-modal="shipping">Доставка та оплата</a>
+        <a href="#" data-modal="returns">Повернення</a>
+        <a href="#" data-modal="sizes">Розмірна сітка</a>
+        <a href="#" data-modal="about">Про ательє</a>
+        <a href="#" data-modal="contact">Контакти</a>
+      </div>
+      <div class="footer-col rd-3" data-reveal="up">
+        <h4>Розсилка</h4>
+        <p>Знижка 10% на перше замовлення</p>
+        <div class="newsletter-form">
+          <input type="email" placeholder="Ваш email" aria-label="Email для розсилки">
+          <button type="button" class="btn btn-primary" aria-label="Підписатися"><i class="fa-solid fa-arrow-right" aria-hidden="true"></i></button>
+          <p class="newsletter-msg" role="status"></p>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Maison. Демонстраційний проєкт — оплата не підключена.</span>
+      <div class="social-links">
+        <a href="#" aria-label="Instagram" data-toast="Демо-версія: соціальні мережі поки не підключені"><i class="fa-brands fa-instagram" aria-hidden="true"></i></a>
+        <a href="#" aria-label="Facebook" data-toast="Демо-версія: соціальні мережі поки не підключені"><i class="fa-brands fa-facebook" aria-hidden="true"></i></a>
+        <a href="#" aria-label="TikTok" data-toast="Демо-версія: соціальні мережі поки не підключені"><i class="fa-brands fa-tiktok" aria-hidden="true"></i></a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<button type="button" class="to-top" id="to-top" aria-label="Вгору"><i class="fa-solid fa-arrow-up" aria-hidden="true"></i></button>
+
+<script src="data.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
